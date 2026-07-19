@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TORQUE — Precision Machinery Manufacturing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0b;
+    --panel:#141619;
+    --panel-2:#1c1f24;
+    --line:rgba(255,255,255,0.09);
+    --line-soft:rgba(255,255,255,0.05);
+    --text:#f2f1ee;
+    --muted:rgba(242,241,238,0.58);
+    --muted-2:rgba(242,241,238,0.36);
+    --hot:#FF5A1F;
+    --amber:#FFB800;
+    --titanium:#9AA5B1;
+    --ok:#3ddc84;
+    --warn:#FFB800;
+    --font-display:'Oswald', sans-serif;
+    --font-body:'Inter', system-ui, sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html,body{
+    background:var(--bg); color:var(--text);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    margin:0; padding:0; overflow-x:hidden;
+  }
+  ::selection{ background: rgba(255,90,31,0.35); }
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+  }
+
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 24px; position:relative; z-index:2; }
+  section{ position:relative; z-index:2; }
+  .eyebrow{ display:flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--hot); }
+  .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:var(--hot); box-shadow:0 0 10px var(--hot); }
+  .eyebrow .tag{ margin-left:6px; padding:2px 8px; border-radius:100px; border:1px solid var(--line); color:var(--muted); font-size:10px; letter-spacing:0.08em; }
+  h1,h2,h3{ font-family:var(--font-display); font-weight:600; letter-spacing:-0.01em; margin:0; }
+
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  .reveal-stagger > *{ opacity:0; transform:translateY(20px); transition:opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1); }
+  .reveal-stagger.in > *{ opacity:1; transform:translateY(0); }
+  .reveal-stagger.in > *:nth-child(1){ transition-delay:.0s; }
+  .reveal-stagger.in > *:nth-child(2){ transition-delay:.08s; }
+  .reveal-stagger.in > *:nth-child(3){ transition-delay:.16s; }
+  .reveal-stagger.in > *:nth-child(4){ transition-delay:.24s; }
+  .reveal-stagger.in > *:nth-child(5){ transition-delay:.32s; }
+  .reveal-stagger.in > *:nth-child(6){ transition-delay:.40s; }
+
+  .bg-fixed{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; background:#0a0a0b; }
+  .bg-grid{
+    position:absolute; inset:-2px;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 70% 55% at 50% 20%, #000 40%, transparent 100%);
+  }
+  .bg-glow{
+    position:absolute; width:900px; height:900px; border-radius:50%;
+    background:radial-gradient(circle, rgba(255,90,31,0.16), transparent 70%);
+    top:-380px; left:50%; transform:translateX(-50%);
+    animation:drift 18s ease-in-out infinite alternate;
+  }
+  @keyframes drift{ 0%{ transform:translate(-56%,-2%);} 100%{ transform:translate(-44%,4%);} }
+  .guide-line{ display:none; }
+  @media (min-width:1024px){
+    .guide-line{ display:block; position:fixed; inset-block:0; width:1px; background:var(--line-soft); z-index:1; }
+    .guide-line.l{ left:calc(50% - 34rem); }
+    .guide-line.r{ left:calc(50% + 34rem); }
+  }
+
+  .hot-gradient{
+    background-image:linear-gradient(to right,#1a0f08 0%, #6a2c0a 14%, #FF5A1F 42%, #FFD24C 58%, #FF5A1F 76%, #6a2c0a 90%, #1a0f08 100%);
+    background-size:220% auto;
+    -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent;
+    animation:shiny 6s linear infinite;
+  }
+  @keyframes shiny{ 0%{ background-position:-200% center; } 100%{ background-position:200% center; } }
+
+  .glass{
+    background:rgba(255,255,255,0.02);
+    backdrop-filter:blur(10px);
+    border:1px solid var(--line);
+    box-shadow:inset 0 1px 1px rgba(255,255,255,0.06);
+    position:relative;
+  }
+  .glass::before{
+    content:''; position:absolute; inset:0; border-radius:inherit; padding:1px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.06) 22%, rgba(255,255,255,0) 45%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.08) 82%, rgba(255,255,255,0.28) 100%);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none;
+  }
+
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; font-family:var(--font-body); font-weight:600; font-size:14px; padding:13px 22px; border-radius:8px; border:none; cursor:pointer; transition:all .25s cubic-bezier(.22,1,.36,1); white-space:nowrap; }
+  .btn-hot{ background:linear-gradient(135deg,#FF5A1F,#e0450f); color:#fff; box-shadow:0 8px 24px rgba(255,90,31,0.28); }
+  .btn-hot:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(255,90,31,0.4); }
+  .btn-ghost{ background:rgba(255,255,255,0.03); color:var(--text); border:1px solid var(--line); }
+  .btn-ghost:hover{ background:rgba(255,255,255,0.07); }
+  .btn svg{ transition:transform .25s ease; }
+  .btn:hover svg{ transform:translateX(3px); }
+
+  header.nav{ position:sticky; top:0; z-index:50; }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; padding:18px 24px; }
+  .nav-bg{ position:absolute; inset:0; background:rgba(10,10,11,0.72); backdrop-filter:blur(14px); border-bottom:1px solid var(--line); z-index:-1; }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-size:19px; font-weight:600; letter-spacing:0.02em; }
+  .brand-link{ display:flex; align-items:center; gap:10px; }
+  .brand .mark{ width:30px; height:30px; }
+  .nav-links{ display:none; gap:34px; }
+  .nav-links a{ font-size:13.5px; color:var(--muted); font-weight:500; letter-spacing:0.01em; transition:color .2s; }
+  .nav-links a:hover{ color:var(--text); }
+  @media (min-width:900px){ .nav-links{ display:flex; } }
+  .nav-right{ display:flex; align-items:center; gap:10px; }
+  .menu-btn{ width:40px; height:40px; border-radius:10px; border:1px solid var(--line); background:rgba(255,255,255,0.03); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  @media (min-width:900px){ .menu-btn{ display:none; } }
+  .mobile-menu{ display:none; flex-direction:column; gap:2px; padding:8px 24px 18px; }
+  .mobile-menu.open{ display:flex; }
+  .mobile-menu a{ padding:12px 4px; border-top:1px solid var(--line-soft); color:var(--muted); font-size:14px; }
+  .mobile-menu .btn{ margin-top:10px; width:100%; }
+
+  .logo-slot{
+    width:84px; height:54px; border-radius:8px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .logo-slot img{ width:100%; height:100%; object-fit:contain; display:none; }
+  .logo-slot img[src]{ display:block; }
+  .logo-slot img[src] + .logo-fallback{ display:none; }
+  .logo-slot .logo-fallback{ font-family:var(--font-mono); font-size:8px; letter-spacing:0.05em; color:var(--muted-2); text-align:center; line-height:1.2; }
+  .foot-brand .logo-slot{ width:95px; height:95px; }
+
+  .btn-login{ background:transparent; border:1px solid var(--line); color:var(--text); font-size:13.5px; padding:10px 18px; }
+  .btn-login:hover{ background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.2); }
+  .desktop-only-btn{ display:none; }
+  @media (min-width:900px){ .desktop-only-btn{ display:inline-flex; } }
+
+  .hero{ padding:76px 0 40px; }
+  .hero-grid{ display:grid; grid-template-columns:1fr; gap:40px; align-items:center; }
+  @media (min-width:960px){ .hero-grid{ grid-template-columns:1.05fr 0.95fr; gap:50px; } }
+  .hero h1{ font-size:44px; line-height:0.98; }
+  @media (min-width:640px){ .hero h1{ font-size:60px; } }
+  @media (min-width:960px){ .hero h1{ font-size:68px; } }
+  .hero p.lede{ margin-top:22px; color:var(--muted); font-size:16px; line-height:1.65; max-width:480px; }
+  .hero-cta{ margin-top:32px; display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+  .hero-sub{ margin-top:14px; font-family:var(--font-mono); font-size:11.5px; color:var(--muted-2); letter-spacing:0.04em; }
+
+  .hero-visual{ position:relative; border-radius:20px; overflow:hidden; border:1px solid var(--line); aspect-ratio:4/5; }
+  .hero-visual img{ width:100%; height:100%; object-fit:cover; }
+  .hero-visual::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,10,11,0) 30%, rgba(10,10,11,0.85) 100%); }
+  .gauge-badge{ position:absolute; left:18px; bottom:18px; z-index:2; padding:14px 16px; border-radius:14px; display:flex; align-items:center; gap:14px; }
+  .gauge{ width:52px; height:52px; border-radius:50%; position:relative; background:conic-gradient(var(--hot) 0deg, var(--hot) calc(var(--pct,0)*1deg), rgba(255,255,255,0.08) calc(var(--pct,0)*1deg)); display:flex; align-items:center; justify-content:center; transition:background 1.2s cubic-bezier(.22,1,.36,1); }
+  .gauge::before{ content:''; position:absolute; inset:5px; border-radius:50%; background:#0e1013; }
+  .gauge span{ position:relative; z-index:1; font-family:var(--font-mono); font-size:11px; font-weight:600; }
+  .gauge-badge .label{ font-family:var(--font-mono); font-size:10.5px; color:var(--muted); letter-spacing:0.04em; }
+  .gauge-badge .value{ font-family:var(--font-mono); font-size:13px; font-weight:600; color:var(--text); margin-top:2px; }
+
+  .ticker-strip{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:rgba(0,0,0,0.35); backdrop-filter:blur(8px); overflow:hidden; }
+  .ticker-track{ display:flex; gap:56px; padding:14px 0; white-space:nowrap; animation:tickerScroll 32s linear infinite; width:max-content; }
+  .ticker-strip:hover .ticker-track{ animation-play-state:paused; }
+  @keyframes tickerScroll{ 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
+  .ticker-item{ display:flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:12.5px; color:var(--muted); letter-spacing:0.03em; }
+  .ticker-item b{ color:var(--text); font-weight:600; }
+  .ticker-item .sep{ color:var(--hot); }
+
+  .dash-wrap{ padding:88px 0; }
+  .dash{ border-radius:18px; overflow:hidden; border:1px solid var(--line); background:rgba(14,16,19,0.92); backdrop-filter:blur(20px); }
+  .dash-titlebar{ display:flex; align-items:center; justify-content:space-between; padding:12px 18px; border-bottom:1px solid var(--line); }
+  .traffic{ display:flex; gap:7px; }
+  .traffic span{ width:11px; height:11px; border-radius:50%; }
+  .dash-title{ font-family:var(--font-mono); font-size:12px; color:var(--muted); }
+  .dash-status{ display:flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:11px; color:var(--ok); }
+  .dash-status .p{ width:7px; height:7px; border-radius:50%; background:var(--ok); box-shadow:0 0 8px var(--ok); animation:pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+
+  .dash-body{ display:grid; grid-template-columns:1fr; }
+  @media (min-width:860px){ .dash-body{ grid-template-columns:230px 1fr 300px; } }
+
+  .dash-sidebar{ border-right:1px solid var(--line); padding:16px; }
+  .machine-row{ display:flex; align-items:center; justify-content:space-between; padding:10px 10px; border-radius:8px; margin-bottom:4px; font-size:12.5px; cursor:default; }
+  .machine-row.active{ background:rgba(255,90,31,0.1); }
+  .machine-row:not(.active):hover{ background:rgba(255,255,255,0.04); }
+  .machine-row .m-name{ display:flex; align-items:center; gap:8px; color:var(--text); }
+  .status-dot{ width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .status-dot.run{ background:var(--ok); box-shadow:0 0 6px var(--ok); }
+  .status-dot.idle{ background:var(--titanium); }
+  .status-dot.maint{ background:var(--warn); }
+  .machine-row .m-pct{ font-family:var(--font-mono); font-size:11px; color:var(--muted); }
+  .sidebar-label{ font-family:var(--font-mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted-2); margin:18px 0 8px; }
+
+  .dash-main{ padding:20px; border-right:1px solid var(--line); }
+  .metric-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:18px; }
+  .metric-card{ border:1px solid var(--line); border-radius:10px; padding:14px; background:rgba(255,255,255,0.015); }
+  .metric-card .m-label{ font-family:var(--font-mono); font-size:10.5px; color:var(--muted); letter-spacing:0.04em; }
+  .metric-card .m-value{ font-family:var(--font-display); font-size:26px; margin-top:6px; color:var(--text); }
+  .metric-card .m-value.hot{ color:var(--hot); }
+  .bar-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .bar-row .b-label{ width:88px; font-size:11.5px; color:var(--muted); flex-shrink:0; }
+  .bar-track{ flex:1; height:7px; border-radius:100px; background:rgba(255,255,255,0.06); overflow:hidden; }
+  .bar-fill{ height:100%; border-radius:100px; background:linear-gradient(90deg,#FF5A1F,#FFB800); width:0%; transition:width 1.4s cubic-bezier(.22,1,.36,1); }
+
+  .dash-log{ padding:16px; }
+  .log-item{ display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--line-soft); font-size:12px; }
+  .log-item .log-t{ font-family:var(--font-mono); font-size:10.5px; color:var(--muted-2); flex-shrink:0; width:44px; }
+  .log-item .log-d{ color:var(--muted); line-height:1.4; }
+  .log-item .log-d b{ color:var(--text); font-weight:600; }
+
+  .cap-section{ padding:60px 0 20px; }
+  .section-head{ max-width:620px; }
+  .section-head h2{ font-size:34px; margin-top:16px; line-height:1.05; }
+  @media (min-width:640px){ .section-head h2{ font-size:44px; } }
+  .section-head p{ margin-top:16px; color:var(--muted); font-size:15.5px; line-height:1.65; }
+
+  .cap-grid{ margin-top:44px; display:grid; grid-template-columns:1fr; gap:20px; }
+  @media (min-width:700px){ .cap-grid{ grid-template-columns:repeat(2,1fr); } }
+  .cap-card{ border-radius:16px; overflow:hidden; transition:transform .4s cubic-bezier(.22,1,.36,1), border-color .4s; }
+  .cap-card:hover{ transform:translateY(-6px); }
+  .cap-img{ height:190px; overflow:hidden; }
+  .cap-img img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.22,1,.36,1); }
+  .cap-card:hover .cap-img img{ transform:scale(1.06); }
+  .cap-body{ padding:20px 22px 24px; }
+  .cap-body h3{ font-size:19px; display:flex; align-items:center; gap:10px; }
+  .cap-body p{ margin-top:10px; color:var(--muted); font-size:13.8px; line-height:1.6; }
+  .cap-icon{ width:34px; height:34px; border-radius:9px; background:rgba(255,90,31,0.12); display:flex; align-items:center; justify-content:center; color:var(--hot); flex-shrink:0; }
+
+  .showcase{ padding:80px 0; }
+  .showcase-scroll{ margin-top:40px; display:flex; gap:18px; overflow-x:auto; padding-bottom:10px; scroll-snap-type:x mandatory; scrollbar-width:none; }
+  .showcase-scroll::-webkit-scrollbar{ display:none; }
+  .show-card{ scroll-snap-align:start; flex:0 0 280px; border-radius:16px; overflow:hidden; position:relative; height:360px; }
+  .show-card img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.22,1,.36,1); }
+  .show-card:hover img{ transform:scale(1.08); }
+  .show-overlay{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,10,11,0) 40%, rgba(10,10,11,0.92) 100%); display:flex; flex-direction:column; justify-content:flex-end; padding:20px; }
+  .show-overlay .tag-sm{ font-family:var(--font-mono); font-size:10px; color:var(--hot); letter-spacing:0.08em; text-transform:uppercase; }
+  .show-overlay h3{ font-size:18px; margin-top:6px; }
+  .show-overlay p{ font-size:12.5px; color:var(--muted); margin-top:6px; line-height:1.5; }
+
+  .process{ padding:80px 0; }
+  .process-list{ margin-top:44px; display:grid; grid-template-columns:1fr; gap:0; }
+  .process-item{ display:grid; grid-template-columns:64px 1fr; gap:20px; padding:26px 0; border-top:1px solid var(--line); }
+  .process-item:last-child{ border-bottom:1px solid var(--line); }
+  .process-num{ font-family:var(--font-mono); font-size:13px; color:var(--hot); font-weight:600; padding-top:2px; }
+  .process-content h3{ font-size:19px; }
+  .process-content p{ margin-top:8px; color:var(--muted); font-size:14px; line-height:1.6; max-width:560px; }
+  @media (min-width:760px){
+    .process-item{ grid-template-columns:64px 1fr 220px; align-items:center; }
+    .process-tag{ font-family:var(--font-mono); font-size:11px; color:var(--muted-2); text-align:right; }
+  }
+
+  .industries{ padding:56px 0; }
+  .ind-kicker{ text-align:center; font-family:var(--font-mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted-2); }
+  .ind-grid{ margin-top:36px; display:grid; grid-template-columns:repeat(2,1fr); gap:22px; text-align:center; }
+  @media (min-width:640px){ .ind-grid{ grid-template-columns:repeat(4,1fr); } }
+  .ind-item{ font-family:var(--font-display); font-size:15px; letter-spacing:0.03em; color:var(--muted); transition:color .25s; }
+  .ind-item:hover{ color:var(--text); }
+
+  .facilities{ padding:80px 0; }
+  .fac-grid{ margin-top:44px; display:grid; grid-template-columns:1fr; gap:20px; }
+  @media (min-width:700px){ .fac-grid{ grid-template-columns:repeat(3,1fr); } }
+  .fac-card{ border-radius:16px; overflow:hidden; transition:transform .4s cubic-bezier(.22,1,.36,1); }
+  .fac-card:hover{ transform:translateY(-6px); }
+  .fac-img{ height:170px; overflow:hidden; position:relative; }
+  .fac-img img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.22,1,.36,1); }
+  .fac-card:hover .fac-img img{ transform:scale(1.06); }
+  .fac-badge{ position:absolute; top:12px; left:12px; font-family:var(--font-mono); font-size:10px; letter-spacing:0.06em; text-transform:uppercase; padding:4px 10px; border-radius:100px; background:rgba(10,10,11,0.7); backdrop-filter:blur(6px); border:1px solid var(--line); color:var(--ok); display:flex; align-items:center; gap:6px; }
+  .fac-badge .p{ width:6px; height:6px; border-radius:50%; background:var(--ok); box-shadow:0 0 6px var(--ok); }
+  .fac-body{ padding:18px 20px 22px; }
+  .fac-body h3{ font-size:17px; }
+  .fac-body .fac-loc{ margin-top:4px; font-family:var(--font-mono); font-size:11px; color:var(--muted-2); letter-spacing:0.03em; }
+  .fac-body p{ margin-top:10px; color:var(--muted); font-size:13.5px; line-height:1.6; }
+  .fac-stats{ margin-top:14px; display:flex; gap:18px; border-top:1px solid var(--line); padding-top:14px; }
+  .fac-stats div b{ display:block; font-family:var(--font-display); font-size:16px; color:var(--text); }
+  .fac-stats div span{ font-family:var(--font-mono); font-size:10px; color:var(--muted-2); letter-spacing:0.03em; }
+
+  .testimonials{ padding:80px 0; border-top:1px solid var(--line); }
+  .t-grid{ margin-top:40px; display:grid; grid-template-columns:1fr; gap:20px; }
+  @media (min-width:860px){ .t-grid{ grid-template-columns:repeat(3,1fr); } }
+  .t-card{ border-radius:18px; padding:26px; display:flex; flex-direction:column; }
+  .t-card blockquote{ margin:0; font-size:14.5px; line-height:1.65; color:rgba(242,241,238,0.86); }
+  .t-foot{ margin-top:22px; padding-top:18px; border-top:1px solid var(--line); display:flex; align-items:center; gap:12px; }
+  .t-avatar{ width:44px; height:44px; border-radius:50%; overflow:hidden; flex-shrink:0; border:1px solid var(--line); }
+  .t-avatar img{ width:100%; height:100%; object-fit:cover; }
+  .t-foot .name{ font-size:14px; font-weight:700; }
+  .t-foot .role{ font-size:12px; color:var(--muted); margin-top:2px; }
+  .t-foot .co{ font-size:11.5px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:var(--hot); margin-top:6px; }
+
+  .faq{ padding:80px 0; border-top:1px solid var(--line); }
+  .faq-list{ margin-top:40px; max-width:820px; }
+  .faq-item{ border-bottom:1px solid var(--line); }
+  .faq-item:first-child{ border-top:1px solid var(--line); }
+  .faq-q{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:20px; background:none; border:none; cursor:pointer; padding:22px 4px; text-align:left; font-family:var(--font-display); font-size:17px; color:var(--text); }
+  .faq-q .plus{ flex-shrink:0; width:28px; height:28px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--hot); transition:transform .3s cubic-bezier(.22,1,.36,1); }
+  .faq-item.open .faq-q .plus{ transform:rotate(135deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.22,1,.36,1); }
+  .faq-a p{ margin:0 0 22px; padding:0 4px; color:var(--muted); font-size:14px; line-height:1.65; max-width:640px; }
+  .faq-item.open .faq-a{ max-height:220px; }
+
+  .pricing{ padding:90px 0; position:relative; }
+  .price-toggle-wrap{ display:flex; justify-content:center; align-items:center; gap:12px; margin-top:14px; }
+  .toggle-label{ font-family:var(--font-mono); font-size:12.5px; color:var(--muted); }
+  .toggle{ width:48px; height:26px; border-radius:100px; background:rgba(255,255,255,0.08); border:1px solid var(--line); position:relative; cursor:pointer; padding:0; }
+  .toggle-knob{ width:18px; height:18px; border-radius:50%; background:var(--titanium); position:absolute; top:3px; left:3px; transition:all .3s cubic-bezier(.4,0,.2,1); }
+  .toggle.active{ background:rgba(255,90,31,0.25); border-color:rgba(255,90,31,0.4); }
+  .toggle.active .toggle-knob{ transform:translateX(22px); background:var(--hot); }
+  .save-badge{ font-family:var(--font-mono); font-size:10.5px; color:var(--ok); }
+
+  .price-grid{ margin-top:40px; display:grid; grid-template-columns:1fr; gap:20px; }
+  @media (min-width:860px){ .price-grid{ grid-template-columns:repeat(3,1fr); } }
+  .price-card{ border-radius:20px; padding:34px 26px; display:flex; flex-direction:column; border:1px solid var(--line); background:linear-gradient(160deg, rgba(255,255,255,0.03), rgba(255,255,255,0.005)); transition:transform .4s cubic-bezier(.22,1,.36,1), border-color .4s; }
+  .price-card:hover{ transform:translateY(-8px); border-color:rgba(255,90,31,0.4); }
+  .price-card.featured{ border-color:rgba(255,90,31,0.5); background:linear-gradient(160deg, rgba(255,90,31,0.08), rgba(255,255,255,0.01)); }
+  .price-tier{ font-size:13px; color:var(--muted); font-family:var(--font-mono); }
+  .price-value{ font-family:var(--font-display); font-size:42px; margin-top:10px; }
+  .price-value span{ font-size:14px; color:var(--muted); font-family:var(--font-mono); }
+  .price-desc{ margin-top:14px; color:var(--muted); font-size:13.5px; line-height:1.6; min-height:3.2em; }
+  .price-list{ list-style:none; margin:26px 0 0; padding:0; flex:1; }
+  .price-list li{ display:flex; align-items:flex-start; gap:12px; font-size:13.5px; color:rgba(242,241,238,0.85); margin-bottom:14px; line-height:1.4; }
+  .check-circle{ width:22px; height:22px; border-radius:50%; background:rgba(255,90,31,0.14); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--hot); }
+  .price-btn{ margin-top:26px; width:100%; padding:13px; border-radius:9px; background:transparent; border:1px solid var(--line); color:var(--text); font-weight:600; font-size:13.5px; cursor:pointer; transition:all .25s; }
+  .price-card.featured .price-btn{ background:var(--hot); border-color:var(--hot); color:#fff; }
+  .price-btn:hover{ background:rgba(255,255,255,0.06); }
+  .price-card.featured .price-btn:hover{ background:#e0450f; }
+
+  .final-cta{ padding:80px 0 100px; }
+  .cta-box{ border-radius:24px; padding:60px 32px; text-align:center; position:relative; overflow:hidden; }
+  .cta-glow{ position:absolute; width:600px; height:400px; background:radial-gradient(circle, rgba(255,90,31,0.22), transparent 70%); top:-160px; left:50%; transform:translateX(-50%); pointer-events:none; }
+  .cta-box h2{ font-size:34px; position:relative; z-index:1; }
+  @media (min-width:640px){ .cta-box h2{ font-size:50px; } }
+  .cta-box p{ margin:18px auto 0; max-width:440px; color:var(--muted); font-size:14.5px; line-height:1.6; position:relative; z-index:1; }
+  .cta-buttons{ margin-top:30px; display:flex; flex-wrap:wrap; gap:14px; justify-content:center; position:relative; z-index:1; }
+
+  footer{ border-top:1px solid var(--line); padding:64px 0 28px; background:rgba(0,0,0,0.25); }
+  .foot-grid{ display:grid; grid-template-columns:1fr; gap:40px; }
+  @media (min-width:760px){ .foot-grid{ grid-template-columns:1.3fr 0.8fr 0.8fr 1fr; gap:32px; } }
+
+  .foot-brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-size:18px; letter-spacing:0.02em; }
+  .foot-brand .logo-slot{ width:95px; height:95px; }
+  .foot-desc{ margin-top:16px; color:var(--muted); font-size:13.5px; line-height:1.65; max-width:320px; }
+
+  .foot-col h4{ font-family:var(--font-mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--hot); margin:0 0 18px; }
+  .foot-col a{ display:block; font-size:13.5px; color:var(--muted); margin-bottom:13px; transition:color .2s; }
+  .foot-col a:hover{ color:var(--text); }
+
+  .foot-reach p{ font-size:13.5px; color:var(--muted); line-height:1.65; margin:0 0 14px; }
+  .foot-social{ display:flex; gap:10px; margin-top:6px; }
+  .foot-social a{ width:38px; height:38px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--muted); transition:all .2s; margin:0; }
+  .foot-social a:hover{ color:var(--text); border-color:rgba(255,255,255,0.3); background:rgba(255,255,255,0.04); }
+
+  .foot-bottom{ margin-top:52px; padding-top:24px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:10px; }
+  @media (min-width:700px){ .foot-bottom{ flex-direction:row; align-items:center; justify-content:space-between; } }
+  .foot-copy{ font-size:12px; color:var(--muted-2); }
+  .foot-note{ font-size:12px; color:var(--muted-2); max-width:520px; line-height:1.5; }
+  @media (min-width:700px){ .foot-note{ text-align:right; } }
+</style>
+</head>
+<body>
+
+<div class="bg-fixed">
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+</div>
+<div class="guide-line l"></div>
+<div class="guide-line r"></div>
+
+<header class="nav" id="top">
+  <div class="nav-bg"></div>
+  <div class="wrap nav-inner">
+    <a href="index.html" class="brand brand-link" aria-label="TORQUE — Back to home">
+      <span class="logo-slot">
+        <img id="siteLogo" src="./Assets/Stacklyimg2.webp" alt="Company logo">
+        <span class="logo-fallback">YOUR<br>LOGO</span>
+      </span>
+    </a>
+    <nav class="nav-links">
+        <a href="index.html">Home</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#machines">Machinery</a>
+      <a href="#process">Process</a>
+      <a href="#facilities">Facilities</a>
+      
+      <a href="#pricing">Plans</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-right">
+      
+      <a href="login.html" class="btn btn-hot desktop-only-btn" id="navCta">
+        Login
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f2f1ee" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="#capabilities">Capabilities</a>
+    <a href="#machines">Machinery</a>
+    <a href="#process">Process</a>
+    <a href="#facilities">Facilities</a>
+   
+    <a href="#pricing">Plans</a>
+    <a href="#contact">Contact</a>
+    <a href="login.html" class="btn btn-login">Login</a>
+    
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow reveal in"><span class="dot"></span> PRECISION MANUFACTURING <span class="tag">ISO 9001:2015</span></div>
+      <h1 class="reveal in" style="transition-delay:.1s">Engineering,<br><span class="hot-gradient">Forged Exact.</span></h1>
+      <p class="lede reveal in" style="transition-delay:.25s">TORQUE builds the machines behind modern industry — CNC systems, robotic cells, and precision tooling engineered to run within microns, shift after shift, for decades.</p>
+      <div class="hero-cta reveal in" style="transition-delay:.4s">
+        <a href="#contact" class="btn btn-hot">
+          Request a Quote
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#machines" class="btn btn-ghost">View Machinery</a>
+      </div>
+      <div class="hero-sub reveal in" style="transition-delay:.55s">± 0.002mm TOLERANCE &nbsp;·&nbsp; 40+ YEARS IN OPERATION &nbsp;·&nbsp; 12 PRODUCTION LINES</div>
+    </div>
+    <div class="hero-visual reveal in" style="transition-delay:.3s">
+      <img src="https://images.unsplash.com/photo-1647427060118-4911c9821b82?auto=format&fit=crop&w=1200&q=80" alt="Factory floor with industrial machinery">
+      <div class="gauge-badge glass">
+        <div class="gauge" id="heroGauge" style="--pct:0"><span id="heroGaugeVal">0%</span></div>
+        <div>
+          <div class="label">LIVE LINE OEE</div>
+          <div class="value" id="heroGaugeText">Calibrating…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ticker-strip">
+  <div class="ticker-track" id="tickerTrack">
+    <div class="ticker-item"><b>OEE 97.8%</b><span class="sep">/</span>Overall Equipment Effectiveness</div>
+    <div class="ticker-item"><b>UPTIME 99.2%</b><span class="sep">/</span>Rolling 90-Day Average</div>
+    <div class="ticker-item"><b>±0.002mm</b><span class="sep">/</span>Machining Tolerance</div>
+    <div class="ticker-item"><b>4,820 UNITS</b><span class="sep">/</span>Per Shift Capacity</div>
+    <div class="ticker-item"><b>ISO 9001:2015</b><span class="sep">/</span>Certified Quality System</div>
+    <div class="ticker-item"><b>212 ROBOTS</b><span class="sep">/</span>Deployed Across Facilities</div>
+    <div class="ticker-item"><b>OEE 97.8%</b><span class="sep">/</span>Overall Equipment Effectiveness</div>
+    <div class="ticker-item"><b>UPTIME 99.2%</b><span class="sep">/</span>Rolling 90-Day Average</div>
+    <div class="ticker-item"><b>±0.002mm</b><span class="sep">/</span>Machining Tolerance</div>
+    <div class="ticker-item"><b>4,820 UNITS</b><span class="sep">/</span>Per Shift Capacity</div>
+    <div class="ticker-item"><b>ISO 9001:2015</b><span class="sep">/</span>Certified Quality System</div>
+    <div class="ticker-item"><b>212 ROBOTS</b><span class="sep">/</span>Deployed Across Facilities</div>
+  </div>
+</section>
+
+<section class="dash-wrap">
+  <div class="wrap">
+    <div class="dash reveal">
+      <div class="dash-titlebar">
+        <div class="traffic"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+        <div class="dash-title">TORQUE — Production Control</div>
+        <div class="dash-status"><span class="p"></span> LIVE</div>
+      </div>
+      <div class="dash-body">
+        <div class="dash-sidebar">
+          <div class="sidebar-label">Cells — Bay A</div>
+          <div class="machine-row active"><div class="m-name"><span class="status-dot run"></span>CNC-04 Lathe</div><div class="m-pct">94%</div></div>
+          <div class="machine-row"><div class="m-name"><span class="status-dot run"></span>Robotic Cell 3</div><div class="m-pct">88%</div></div>
+          <div class="machine-row"><div class="m-name"><span class="status-dot run"></span>Press-12</div><div class="m-pct">91%</div></div>
+          <div class="machine-row"><div class="m-name"><span class="status-dot idle"></span>Mill-07</div><div class="m-pct">idle</div></div>
+          <div class="machine-row"><div class="m-name"><span class="status-dot maint"></span>Welder Cell 2</div><div class="m-pct">maint.</div></div>
+          <div class="sidebar-label">Quality</div>
+          <div class="machine-row"><div class="m-name"><span class="status-dot run"></span>CMM Station 1</div><div class="m-pct">100%</div></div>
+          <div class="machine-row"><div class="m-name"><span class="status-dot run"></span>Vision Inspect</div><div class="m-pct">100%</div></div>
+        </div>
+        <div class="dash-main">
+          <div class="metric-grid">
+            <div class="metric-card"><div class="m-label">THROUGHPUT / HR</div><div class="m-value" id="statThroughput">0</div></div>
+            <div class="metric-card"><div class="m-label">SCRAP RATE</div><div class="m-value hot" id="statScrap">0.00%</div></div>
+            <div class="metric-card"><div class="m-label">SPINDLE LOAD</div><div class="m-value" id="statSpindle">0%</div></div>
+            <div class="metric-card"><div class="m-label">CYCLE TIME</div><div class="m-value" id="statCycle">0.0s</div></div>
+          </div>
+          <div class="bar-row"><div class="b-label">CNC-04</div><div class="bar-track"><div class="bar-fill" data-w="94"></div></div></div>
+          <div class="bar-row"><div class="b-label">Robotic 3</div><div class="bar-track"><div class="bar-fill" data-w="88"></div></div></div>
+          <div class="bar-row"><div class="b-label">Press-12</div><div class="bar-track"><div class="bar-fill" data-w="91"></div></div></div>
+          <div class="bar-row"><div class="b-label">Mill-07</div><div class="bar-track"><div class="bar-fill" data-w="12"></div></div></div>
+        </div>
+        <div class="dash-log">
+          <div class="sidebar-label" style="margin-top:0">Event Log</div>
+          <div class="log-item"><div class="log-t">09:41</div><div class="log-d"><b>CNC-04</b> completed batch #4482, 0 rejects.</div></div>
+          <div class="log-item"><div class="log-t">09:22</div><div class="log-d"><b>Robotic Cell 3</b> tool change complete, resumed weld path.</div></div>
+          <div class="log-item"><div class="log-t">08:57</div><div class="log-d"><b>Vision Inspect</b> flagged 2 units for rework, auto-quarantined.</div></div>
+          <div class="log-item"><div class="log-t">08:30</div><div class="log-d"><b>Welder Cell 2</b> entered scheduled maintenance window.</div></div>
+          <div class="log-item"><div class="log-d"><b>Press-12</b> die changeover complete, 6m 40s — under target.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cap-section" id="capabilities">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> CAPABILITIES <span class="tag">In-house</span></div>
+      <h2>Every stage of the build,<br>under one roof.</h2>
+      <p>From raw billet to finished assembly, TORQUE controls the full manufacturing chain — so tolerances hold and lead times stay honest.</p>
+    </div>
+    <div class="cap-grid reveal-stagger">
+      <div class="cap-card glass">
+        <div class="cap-img"><img src="https://images.unsplash.com/photo-1666618090858-fbcee636bd3e?auto=format&fit=crop&w=900&q=80" alt="CNC lathe machining a metal shaft"></div>
+        <div class="cap-body">
+          <h3><span class="cap-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg></span>Precision Machining</h3>
+          <p>5-axis CNC milling and turning holding tolerances to ±0.002mm across steel, aluminum, and superalloys.</p>
+        </div>
+      </div>
+      <div class="cap-card glass">
+        <div class="cap-img"><img src="https://images.unsplash.com/photo-1716191299980-a6e8827ba10b?auto=format&fit=crop&w=900&q=80" alt="Industrial robotic arm on assembly line"></div>
+        <div class="cap-body">
+          <h3><span class="cap-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 20V10a2 2 0 012-2h2M18 20V10a2 2 0 00-2-2h-2M6 20h12M12 4v4"/></svg></span>Robotic Automation</h3>
+          <p>Custom robotic cells for welding, material handling, and high-speed assembly — engineered for 24/7 duty cycles.</p>
+        </div>
+      </div>
+      <div class="cap-card glass">
+        <div class="cap-img"><img src="https://images.unsplash.com/photo-1515630771457-09367d0ae038?auto=format&fit=crop&w=900&q=80" alt="Worker welding steel components"></div>
+        <div class="cap-body">
+          <h3><span class="cap-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z"/></svg></span>Sheet Metal & Fabrication</h3>
+          <p>Laser cutting, press braking, and certified welding for structural frames, enclosures, and pressure vessels.</p>
+        </div>
+      </div>
+      <div class="cap-card glass">
+        <div class="cap-img"><img src="https://images.unsplash.com/photo-1567177173026-402dd75a5ab7?auto=format&fit=crop&w=900&q=80" alt="Close up of precision machined metal parts"></div>
+        <div class="cap-body">
+          <h3><span class="cap-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>Quality Assurance</h3>
+          <p>In-line CMM inspection and vision systems verify every batch against spec before it ships.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="showcase" id="machines">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> FLEET <span class="tag">12 Production Lines</span></div>
+      <h2>Machinery built to<br>outlast the spec sheet.</h2>
+      <p>A working fleet of CNC, robotic, and heavy-forming equipment — maintained on a strict preventive schedule.</p>
+    </div>
+    <div class="showcase-scroll reveal-stagger">
+      <div class="show-card">
+        <img src="https://images.unsplash.com/photo-1717386255773-1e3037c81788?auto=format&fit=crop&w=700&q=80" alt="Large industrial machine on the factory floor">
+        <div class="show-overlay"><div class="tag-sm">Machining</div><h3>5-Axis CNC Center</h3><p>Simultaneous multi-axis cutting for complex geometries.</p></div>
+      </div>
+      <div class="show-card">
+        <img src="https://images.unsplash.com/photo-1627807452502-0c8329fc710b?auto=format&fit=crop&w=700&q=80" alt="Close up of industrial gear component">
+        <div class="show-overlay"><div class="tag-sm">Drivetrain</div><h3>Precision Gear Sets</h3><p>Hardened, ground gears rated for continuous heavy load.</p></div>
+      </div>
+      <div class="show-card">
+        <img src="https://images.unsplash.com/photo-1513828646384-e4d8ec30d2bb?auto=format&fit=crop&w=700&q=80" alt="Industrial machine in a manufacturing plant">
+        <div class="show-overlay"><div class="tag-sm">Forming</div><h3>Hydraulic Press Line</h3><p>2,000-ton capacity for structural stamping and forging.</p></div>
+      </div>
+      <div class="show-card">
+        <img src="https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=700&q=80" alt="Gray industrial commercial machine">
+        <div class="show-overlay"><div class="tag-sm">Automation</div><h3>Robotic Weld Cell</h3><p>Vision-guided arc welding with sub-millimeter path accuracy.</p></div>
+      </div>
+      <div class="show-card">
+        <img src="https://images.unsplash.com/photo-1580901369227-308f6f40bdeb?auto=format&fit=crop&w=700&q=80" alt="Heavy excavator machinery on site">
+        <div class="show-overlay"><div class="tag-sm">Heavy Equipment</div><h3>Site & Yard Machinery</h3><p>Material handling equipment for raw stock and finished loads.</p></div>
+      </div>
+      <div class="show-card">
+        <img src="https://images.unsplash.com/photo-1606337321936-02d1b1a4d5ef?auto=format&fit=crop&w=700&q=80" alt="Precision machined round metal component">
+        <div class="show-overlay"><div class="tag-sm">Tooling</div><h3>Custom Fixtures</h3><p>Purpose-built jigs and tooling engineered per project.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> HOW WE BUILD</div>
+      <h2>From drawing<br>to dock, in sequence.</h2>
+      <p>Every order moves through the same six controlled stages — no shortcuts, no guesswork.</p>
+    </div>
+    <div class="process-list reveal-stagger">
+      <div class="process-item">
+        <div class="process-num">01</div>
+        <div class="process-content"><h3>Design & Engineering</h3><p>DFM review and CAD modeling confirm the part is manufacturable before a single cut is made.</p></div>
+        <div class="process-tag">2–4 days</div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">02</div>
+        <div class="process-content"><h3>Prototyping</h3><p>First-article samples validate fit, tolerance, and finish against the drawing.</p></div>
+        <div class="process-tag">3–5 days</div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">03</div>
+        <div class="process-content"><h3>CNC Machining</h3><p>Production runs across our 5-axis mills and lathes, monitored in real time on the floor.</p></div>
+        <div class="process-tag">Ongoing</div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">04</div>
+        <div class="process-content"><h3>Assembly & Fabrication</h3><p>Robotic and manual assembly cells bring components together into finished units.</p></div>
+        <div class="process-tag">1–3 days</div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">05</div>
+        <div class="process-content"><h3>Quality Testing</h3><p>CMM inspection and load testing verify every unit meets certified spec.</p></div>
+        <div class="process-tag">Per batch</div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">06</div>
+        <div class="process-content"><h3>Packaging & Shipping</h3><p>Custom crating and freight coordination get equipment to site intact.</p></div>
+        <div class="process-tag">1–2 days</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="industries">
+  <div class="wrap">
+    <div class="ind-kicker reveal">Trusted by manufacturers across industries</div>
+    <div class="ind-grid reveal-stagger">
+      <div class="ind-item">AUTOMOTIVE</div>
+      <div class="ind-item">AEROSPACE</div>
+      <div class="ind-item">ENERGY & POWER</div>
+      <div class="ind-item">HEAVY EQUIPMENT</div>
+      <div class="ind-item">MEDICAL DEVICE</div>
+      <div class="ind-item">RAIL & TRANSIT</div>
+      <div class="ind-item">DEFENSE</div>
+      <div class="ind-item">AGRICULTURE</div>
+    </div>
+  </div>
+</section>
+
+<section class="facilities" id="facilities">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> GLOBAL FOOTPRINT <span class="tag">6 Facilities</span></div>
+      <h2>Six plants.<br>One quality standard.</h2>
+      <p>Every TORQUE facility runs the same controls, the same tolerances, and the same reporting — wherever your order is built.</p>
+    </div>
+    <div class="fac-grid reveal-stagger">
+      <div class="fac-card glass">
+        <div class="fac-img">
+          <img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=800&q=80" alt="Chennai precision machining plant floor">
+          <div class="fac-badge"><span class="p"></span>Running</div>
+        </div>
+        <div class="fac-body">
+          <h3>Plant 01 — Chennai</h3>
+          <div class="fac-loc">HEADQUARTERS · TAMIL NADU, IN</div>
+          <p>Flagship 5-axis machining and CMM inspection hall, coordinating all six facilities.</p>
+          <div class="fac-stats">
+            <div><b>210k ft²</b><span>FLOOR AREA</span></div>
+            <div><b>38</b><span>CNC CELLS</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="fac-card glass">
+        <div class="fac-img">
+          <img src="https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=800&q=80" alt="Pune robotic automation facility">
+          <div class="fac-badge"><span class="p"></span>Running</div>
+        </div>
+        <div class="fac-body">
+          <h3>Plant 02 — Pune</h3>
+          <div class="fac-loc">AUTOMATION HUB · MAHARASHTRA, IN</div>
+          <p>Dedicated robotic cell integration and weld-path programming for automotive lines.</p>
+          <div class="fac-stats">
+            <div><b>140k ft²</b><span>FLOOR AREA</span></div>
+            <div><b>64</b><span>ROBOTIC CELLS</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="fac-card glass">
+        <div class="fac-img">
+          <img src="https://images.unsplash.com/photo-1565087921904-11a0806a5309?auto=format&fit=crop&w=800&q=80" alt="Heavy forming and press plant">
+          <div class="fac-badge"><span class="p"></span>Running</div>
+        </div>
+        <div class="fac-body">
+          <h3>Plant 03 — Gujarat</h3>
+          <div class="fac-loc">HEAVY FORMING · GUJARAT, IN</div>
+          <p>2,000-ton press lines and structural fabrication for pressure vessels and frames.</p>
+          <div class="fac-stats">
+            <div><b>260k ft²</b><span>FLOOR AREA</span></div>
+            <div><b>14</b><span>PRESS LINES</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> FROM THE FLOOR</div>
+      <h2>Built on uptime,<br>not promises.</h2>
+    </div>
+    <div class="t-grid reveal-stagger">
+      <figure class="t-card glass">
+        <blockquote>"TORQUE re-tooled our stamping line in six weeks with zero unplanned downtime since. Their engineers actually walk the floor."</blockquote>
+        <figcaption class="t-foot">
+          <div class="t-avatar"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80" alt="Portrait of Marcus Webb"></div>
+          <div><div class="name">Marcus Webb</div><div class="role">VP of Operations</div><div class="co">RIDGELINE AUTO</div></div>
+        </figcaption>
+      </figure>
+      <figure class="t-card glass">
+        <blockquote>"The CMM data we get back with every batch has cut our incoming inspection time by half. Traceability is airtight."</blockquote>
+        <figcaption class="t-foot">
+          <div class="t-avatar"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80" alt="Portrait of Priya Anand"></div>
+          <div><div class="name">Priya Anand</div><div class="role">Quality Director</div><div class="co">HELIX AEROSPACE</div></div>
+        </figcaption>
+      </figure>
+      <figure class="t-card glass">
+        <blockquote>"We've run their robotic weld cells three shifts a day for two years. Maintenance windows are the only downtime we schedule."</blockquote>
+        <figcaption class="t-foot">
+          <div class="t-avatar"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80" alt="Portrait of Tom Bergström"></div>
+          <div><div class="name">Tom Bergström</div><div class="role">Plant Manager</div><div class="co">NORTHFIELD ENERGY</div></div>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> QUESTIONS FROM THE FLOOR</div>
+      <h2>Before you send<br>the drawing.</h2>
+      <p>The specifics engineers and buyers ask us most, answered straight.</p>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item open">
+        <button class="faq-q"><span>What tolerances can TORQUE hold in production?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Our 5-axis CNC centers hold ±0.002mm on production runs, verified in-line by CMM and vision inspection on every batch — not just first-article samples.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>What's the minimum order quantity?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>We run prototype batches from a single unit through full production volumes in the thousands. Pricing and lead time scale with quantity — confirmed at quote.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Which materials do you machine and form?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Steel, stainless, aluminum, titanium, and nickel-based superalloys across our machining, forming, and fabrication lines. Send your spec and we'll confirm feasibility.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Can you handle both prototyping and full production?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Yes. Every order moves through the same design, prototype, and production stages, so the part that ships at volume matches the first sample you approved.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Do you provide inspection reports and traceability?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Every batch ships with CMM inspection data and full material traceability, so incoming quality checks on your end are faster and fully documented.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="section-head reveal" style="margin:0 auto; text-align:center; max-width:560px;">
+      <div class="eyebrow" style="justify-content:center"><span class="dot"></span> SERVICE PLANS</div>
+      <h2>Partnership tiers for<br>every production scale.</h2>
+      <p>Maintenance, tooling support, and priority production slots — matched to how hard you run your lines.</p>
+    </div>
+    <div class="price-toggle-wrap reveal">
+      <span class="toggle-label">Monthly</span>
+      <button class="toggle" id="priceToggle" aria-label="Toggle annual pricing"><div class="toggle-knob"></div></button>
+      <span class="toggle-label">Annual</span>
+      <span class="save-badge">Save 15%</span>
+    </div>
+    <div class="price-grid reveal-stagger">
+      <div class="price-card">
+        <div class="price-tier">Standard Maintenance</div>
+        <div class="price-value"><span class="price-amt" data-m="1200" data-y="1020">$1,200</span><span>/mo</span></div>
+        <div class="price-desc">For single-line operations that need scheduled upkeep and fast response.</div>
+        <ul class="price-list">
+          <li><span class="check-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Quarterly preventive maintenance</li>
+          <li><span class="check-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>48-hour service response</li>
+          <li><span class="check-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Spare parts at standard rates</li>
+          <li><span class="check-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Remote diagnostics portal</li>
+        </ul>
+        <button class="price-btn">Choose Standard</button>
+      </div>
+      <div class="price-card featured">
+        <div class="price-tier">Pro Partnership</div>
+        <div class="price-value"><span class="price-amt" data-m="3400" data-y="2890">$3,400</span><span>/mo</span></div>
+        <div class="price-desc">For multi-line facilities running near-continuous production.</div>
+        <ul class="price-list">
+          <li><span class="check-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Monthly on-site maintenance</li>
+          <li><span class="check-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>4-hour priority response</li>
+          <li><span class="check-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Discounted spares & tooling</li>
+          <li><span class="check-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Live OEE dashboard access</li>
+          <li><span class="check-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Dedicated process engineer</li>
+        </ul>
+        <button class="price-btn">Choose Pro</button>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Enterprise</div>
+        <div class="price-value" style="font-size:32px">Custom</div>
+        <div class="price-desc">For plant-wide programs spanning multiple facilities and product lines.</div>
+        <ul class="price-list">
+          <li><span class="check-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>On-site engineering team</li>
+          <li><span class="check-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>1-hour emergency response</li>
+          <li><span class="check-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Custom tooling & fixtures</li>
+          <li><span class="check-circle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Multi-facility SLA reporting</li>
+        </ul>
+        <button class="price-btn">Talk to Sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta" id="contact">
+  <div class="wrap">
+    <div class="cta-box glass reveal">
+      <div class="cta-glow"></div>
+      <h2>Stop guessing.<br>Start machining.</h2>
+      <p>Tell us the tolerance, the volume, and the deadline — we'll tell you exactly how TORQUE gets it done.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-hot">
+          Request a Quote
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#" class="btn btn-ghost">Talk to Engineering</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="index.html" class="foot-brand" aria-label="TORQUE — Back to home">
+          <span class="logo-slot">
+            <img src="./Assets/Stacklyimg2.webp" alt="Company logo">
+            <span class="logo-fallback">LOGO</span>
+          </span>
+        </a>
+        <p class="foot-desc">STACKLY designs, engineers, and manufactures precision CNC machinery, robotic cells, and automation systems from six production facilities worldwide.</p>
+      </div>
+
+      <div class="foot-col">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#process">Process</a>
+        <a href="#facilities">Facilities</a>
+        <a href="#pricing">Plans</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="foot-col">
+        <h4>Products</h4>
+        <a href="404.html">CNC machining centers</a>
+        <a href="404.html">Robotic weld cells</a>
+        <a href="404.html">Hydraulic press lines</a>
+        <a href="404.html">Precision tooling &amp; fixtures</a>
+      </div>
+
+      <div class="foot-col foot-reach">
+        <h4>Reach Us</h4>
+        <p>Plot 14, Industrial Estate Road,<br>Perungudi Industrial Area,<br>Chennai, Tamil Nadu 600096</p>
+       <a href="404.html"><p>contact@stacklyindustrial.com<br>+91 9876543210</p></a> 
+        <div class="foot-social">
+          <a href="404.html" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+          <a href="404.html" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 8s-.2-1.4-.8-2c-.8-.8-1.7-.8-2.1-.9C16.4 5 12 5 12 5s-4.4 0-7.1.1c-.4.1-1.3.1-2.1.9C2.2 6.6 2 8 2 8S1.8 9.6 1.8 11.3v1.4C1.8 14.4 2 16 2 16s.2 1.4.8 2c.8.8 1.9.8 2.3.9 1.7.2 7 .2 7 .2s4.4 0 7.1-.1c.4-.1 1.3-.1 2.1-.9.6-.6.8-2 .8-2s.2-1.6.2-3.3v-1.4C22.2 9.6 22 8 22 8z"/><path d="M10 9.5l6 2.5-6 2.5v-5z"/></svg></a>
+          <a href="404.html" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <div class="foot-copy">2026 STACKLY Industrial. All rights reserved.</div>
+      <div class="foot-note">All equipment ships fully tested and calibrated to spec. Lead times vary by configuration and volume — confirmed at quote.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+
+  const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  function animateGauge(targetPct){
+    const gauge = document.getElementById('heroGauge');
+    const val = document.getElementById('heroGaugeVal');
+    const txt = document.getElementById('heroGaugeText');
+    let cur = 0;
+    const step = () => {
+      cur += 2;
+      if(cur > targetPct) cur = targetPct;
+      gauge.style.setProperty('--pct', (cur/100*360).toFixed(0));
+      val.textContent = cur + '%';
+      if(cur < targetPct) requestAnimationFrame(() => setTimeout(step, 12));
+      else txt.textContent = 'Nominal — Running';
+    };
+    step();
+  }
+  const heroObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        animateGauge(98);
+        heroObs.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  heroObs.observe(document.querySelector('.hero-visual'));
+
+  function animateCount(el, target, suffix, decimals){
+    let cur = 0;
+    const steps = 40;
+    const inc = target / steps;
+    let i = 0;
+    const t = setInterval(() => {
+      i++;
+      cur += inc;
+      if(i >= steps) { cur = target; clearInterval(t); }
+      el.textContent = (decimals ? cur.toFixed(decimals) : Math.round(cur)) + suffix;
+    }, 30);
+  }
+  const dashObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        animateCount(document.getElementById('statThroughput'), 612, '', 0);
+        animateCount(document.getElementById('statScrap'), 0.34, '%', 2);
+        animateCount(document.getElementById('statSpindle'), 78, '%', 0);
+        animateCount(document.getElementById('statCycle'), 8.4, 's', 1);
+        document.querySelectorAll('.bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.w + '%';
+        });
+        dashObs.disconnect();
+      }
+    });
+  }, { threshold: 0.2 });
+  dashObs.observe(document.querySelector('.dash'));
+
+  const priceToggle = document.getElementById('priceToggle');
+  let yearly = false;
+  priceToggle.addEventListener('click', () => {
+    yearly = !yearly;
+    priceToggle.classList.toggle('active', yearly);
+    document.querySelectorAll('.price-amt').forEach(el => {
+      const val = yearly ? el.dataset.y : el.dataset.m;
+      el.textContent = '$' + Number(val).toLocaleString();
+    });
+    document.querySelectorAll('.price-value span:last-child').forEach(s => {
+      if(s.textContent.includes('/mo')) s.textContent = yearly ? '/mo (billed yearly)' : '/mo';
+    });
+  });
+
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const btn = item.querySelector('.faq-q');
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.faq-item').forEach(i => { if(i !== item) i.classList.remove('open'); });
+      item.classList.toggle('open');
+    });
+  });
+</script>
+
+</body>
+</html>
