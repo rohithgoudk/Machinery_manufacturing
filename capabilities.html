@@ -146,25 +146,50 @@
     .desktop-only-btn{ display:none; }
     @media (min-width:900px){ .desktop-only-btn{ display:inline-flex; } }
 
-    .hero{ padding:76px 0 40px; }
-    .hero-grid{ display:grid; grid-template-columns:1fr; gap:40px; align-items:center; }
-    @media (min-width:960px){ .hero-grid{ grid-template-columns:1.05fr 0.95fr; gap:50px; } }
-    .hero h1{ font-size:44px; line-height:0.98; }
-    @media (min-width:640px){ .hero h1{ font-size:60px; } }
-    @media (min-width:960px){ .hero h1{ font-size:68px; } }
-    .hero p.lede{ margin-top:22px; color:var(--muted); font-size:16px; line-height:1.65; max-width:480px; }
-    .hero-cta{ margin-top:32px; display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
-    .hero-sub{ margin-top:14px; font-family:var(--font-mono); font-size:11.5px; color:var(--muted-2); letter-spacing:0.04em; }
+    /* === Hero: full-bleed background photo with HUD/viewfinder overlay === */
+    .hero{ position:relative; min-height:92vh; display:flex; align-items:flex-end; padding:0 0 72px; overflow:hidden; isolation:isolate; }
+    .hero-bg{ position:absolute; inset:0; z-index:0; }
+    .hero-bg img{ width:100%; height:100%; object-fit:cover; object-position:center 38%; }
+    .hero-scrim{ position:absolute; inset:0; z-index:1;
+      background:
+        linear-gradient(180deg, rgba(10,10,11,0.05) 0%, rgba(10,10,11,0.02) 24%, rgba(10,10,11,0.58) 64%, rgba(10,10,11,0.97) 100%),
+        linear-gradient(100deg, rgba(10,10,11,0.95) 0%, rgba(10,10,11,0.66) 32%, rgba(10,10,11,0.06) 64%, rgba(10,10,11,0.3) 100%);
+    }
+    .hero-grid-fx{ position:absolute; inset:0; z-index:1; background-image:linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size:54px 54px; mix-blend-mode:overlay; opacity:.55; }
 
-    .hero-visual{ position:relative; border-radius:20px; overflow:hidden; border:1px solid var(--line); aspect-ratio:4/5; }
-    .hero-visual img{ width:100%; height:100%; object-fit:cover; }
-    .hero-visual::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,10,11,0) 30%, rgba(10,10,11,0.85) 100%); }
-    .gauge-badge{ position:absolute; left:18px; bottom:18px; z-index:2; padding:14px 16px; border-radius:14px; display:flex; align-items:center; gap:14px; }
-    .gauge{ width:52px; height:52px; border-radius:50%; position:relative; background:conic-gradient(var(--hot) 0deg, var(--hot) calc(var(--pct,0)*1deg), rgba(255,255,255,0.08) calc(var(--pct,0)*1deg)); display:flex; align-items:center; justify-content:center; transition:background 1.2s cubic-bezier(.22,1,.36,1); }
+    .hero-frame{ position:absolute; inset:22px; z-index:2; pointer-events:none; }
+    .hf-corner{ position:absolute; width:26px; height:26px; border-color:rgba(255,90,31,0.6); border-style:solid; border-width:0; }
+    .hf-corner.tl{ top:0; left:0; border-top-width:2px; border-left-width:2px; }
+    .hf-corner.tr{ top:0; right:0; border-top-width:2px; border-right-width:2px; }
+    .hf-corner.bl{ bottom:0; left:0; border-bottom-width:2px; border-left-width:2px; }
+    .hf-corner.br{ bottom:0; right:0; border-bottom-width:2px; border-right-width:2px; }
+
+    .hero-feed-tag{ position:absolute; top:112px; left:40px; z-index:3; display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.06em; color:rgba(242,241,238,0.85); background:rgba(10,10,11,0.4); backdrop-filter:blur(6px); padding:7px 13px 7px 10px; border-radius:100px; border:1px solid rgba(255,255,255,0.12); }
+    .rec-dot{ width:7px; height:7px; border-radius:50%; background:#ff4d4d; box-shadow:0 0 8px #ff4d4d; animation:pulse 1.6s ease-in-out infinite; flex-shrink:0; }
+
+    .hero-hud{ position:absolute; top:112px; right:40px; z-index:3; }
+    .hud-card{ padding:13px 18px; border-radius:14px; display:flex; align-items:center; gap:14px; }
+    .hud-label{ font-family:var(--font-mono); font-size:10px; color:var(--muted); letter-spacing:0.04em; }
+    .hud-value{ font-family:var(--font-mono); font-size:12.5px; font-weight:600; color:var(--text); margin-top:2px; }
+
+    .hero-content{ position:relative; z-index:2; max-width:620px; }
+    .hero h1{ font-size:42px; line-height:0.98; text-shadow:0 6px 30px rgba(0,0,0,0.4); }
+    @media (min-width:640px){ .hero h1{ font-size:58px; } }
+    @media (min-width:960px){ .hero h1{ font-size:68px; } }
+    .hero p.lede{ margin-top:22px; color:rgba(242,241,238,0.76); font-size:16px; line-height:1.65; max-width:480px; }
+    .hero-cta{ margin-top:32px; display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+    .hero-sub{ margin-top:18px; font-family:var(--font-mono); font-size:11.5px; color:var(--muted-2); letter-spacing:0.04em; }
+
+    .gauge{ width:52px; height:52px; border-radius:50%; position:relative; background:conic-gradient(var(--hot) 0deg, var(--hot) calc(var(--pct,0)*1deg), rgba(255,255,255,0.08) calc(var(--pct,0)*1deg)); display:flex; align-items:center; justify-content:center; transition:background 1.2s cubic-bezier(.22,1,.36,1); flex-shrink:0; }
     .gauge::before{ content:''; position:absolute; inset:5px; border-radius:50%; background:#0e1013; }
     .gauge span{ position:relative; z-index:1; font-family:var(--font-mono); font-size:11px; font-weight:600; }
-    .gauge-badge .label{ font-family:var(--font-mono); font-size:10.5px; color:var(--muted); letter-spacing:0.04em; }
-    .gauge-badge .value{ font-family:var(--font-mono); font-size:13px; font-weight:600; color:var(--text); margin-top:2px; }
+
+    @media (max-width:760px){
+      .hero{ min-height:78vh; padding-bottom:48px; }
+      .hero-feed-tag, .hero-hud{ display:none; }
+      .hero-frame{ inset:12px; }
+      .hero-content{ max-width:100%; }
+    }
 
     .ticker-strip{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:rgba(0,0,0,0.35); backdrop-filter:blur(8px); overflow:hidden; }
     .ticker-track{ display:flex; gap:56px; padding:14px 0; white-space:nowrap; animation:tickerScroll 32s linear infinite; width:max-content; }
@@ -417,8 +442,33 @@
 </header>
 
 <section class="hero">
-  <div class="wrap hero-grid">
-    <div>
+  <div class="hero-bg" aria-hidden="true">
+    <img src="./Assets/cap1.webp" alt="Robotic arms operating on the TORQUE production floor">
+    <div class="hero-scrim"></div>
+    <div class="hero-grid-fx"></div>
+  </div>
+
+  <div class="hero-frame" aria-hidden="true">
+    <span class="hf-corner tl"></span>
+    <span class="hf-corner tr"></span>
+    <span class="hf-corner bl"></span>
+    <span class="hf-corner br"></span>
+  </div>
+
+  <div class="hero-feed-tag reveal in" style="transition-delay:.15s"><span class="rec-dot"></span> LIVE FEED — CELL 07 · CHENNAI PLANT</div>
+
+  <div class="hero-hud reveal in" style="transition-delay:.3s">
+    <div class="hud-card glass">
+      <div class="gauge" id="heroGauge" style="--pct:0"><span id="heroGaugeVal">0%</span></div>
+      <div>
+        <div class="hud-label">LIVE LINE OEE</div>
+        <div class="hud-value" id="heroGaugeText">Calibrating…</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="hero-content">
       <div class="eyebrow reveal in"><span class="dot"></span> PRECISION MANUFACTURING <span class="tag">ISO 9001:2015</span></div>
       <h1 class="reveal in" style="transition-delay:.1s">Engineering,<br><span class="hot-gradient">Forged Exact.</span></h1>
       <p class="lede reveal in" style="transition-delay:.25s">TORQUE builds the machines behind modern industry — CNC systems, robotic cells, and precision tooling engineered to run within microns, shift after shift, for decades.</p>
@@ -430,16 +480,6 @@
         <a href="#" class="btn btn-ghost" onclick="navigateTo404(event)">View Machinery</a>
       </div>
       <div class="hero-sub reveal in" style="transition-delay:.55s">± 0.002mm TOLERANCE &nbsp;·&nbsp; 40+ YEARS IN OPERATION &nbsp;·&nbsp; 12 PRODUCTION LINES</div>
-    </div>
-    <div class="hero-visual reveal in" style="transition-delay:.3s">
-      <img src="./Assets/cap1.webp" alt="Factory floor with industrial machinery">
-      <div class="gauge-badge glass">
-        <div class="gauge" id="heroGauge" style="--pct:0"><span id="heroGaugeVal">0%</span></div>
-        <div>
-          <div class="label">LIVE LINE OEE</div>
-          <div class="value" id="heroGaugeText">Calibrating…</div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -929,7 +969,7 @@
       }
     });
   }, { threshold: 0.3 });
-  heroObs.observe(document.querySelector('.hero-visual'));
+  heroObs.observe(document.querySelector('.hero'));
 
   function animateCount(el, target, suffix, decimals){
     let cur = 0;
