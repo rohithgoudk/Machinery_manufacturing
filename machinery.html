@@ -17,8 +17,8 @@
   --font-display:'Oswald', sans-serif; --font-body:'Inter', system-ui, sans-serif; --font-mono:'JetBrains Mono', monospace;
 }
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-html,body{ background:var(--bg); color:var(--text); font-family:var(--font-body); -webkit-font-smoothing:antialiased; margin:0; padding:0; overflow-x:hidden; }
+html{scroll-behavior:smooth; overflow-x:clip;}
+html,body{ background:var(--bg); color:var(--text); font-family:var(--font-body); -webkit-font-smoothing:antialiased; margin:0; padding:0; }
 ::selection{ background: rgba(255,90,31,0.35); }
 a{ color:inherit; text-decoration:none; }
 img{ max-width:100%; display:block; }
@@ -73,12 +73,12 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .mobile-menu.open{ display:flex; }
 .mobile-menu a{ padding:12px 4px; border-top:1px solid var(--line-soft); color:var(--muted); font-size:14px; }
 .mobile-menu .btn{ margin-top:10px; width:100%; }
-.logo-slot{ width:84px; height:54px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.logo-slot{ width:120px; height:62px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
 .logo-slot img{ width:100%; height:100%; object-fit:contain; display:none; }
 .logo-slot img[src]{ display:block; }
 .logo-slot img[src] + .logo-fallback{ display:none; }
 .logo-slot .logo-fallback{ font-family:var(--font-mono); font-size:8px; letter-spacing:0.05em; color:var(--muted-2); text-align:center; line-height:1.2; }
-.foot-brand .logo-slot{ width:95px; height:95px; }
+.foot-brand .logo-slot{ width:135px; height:135px; }
 .btn-login{ background:transparent; border:1px solid var(--line); color:var(--text); font-size:13.5px; padding:10px 18px; }
 .btn-login:hover{ background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.2); }
 .desktop-only-btn{ display:none; } @media (min-width:900px){ .desktop-only-btn{ display:inline-flex; } }
@@ -282,10 +282,10 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
       <h1 class="reveal in" style="transition-delay:.1s">Every machine,<br><span class="hot-gradient">tracked to the minute.</span></h1>
       <p class="lede reveal in" style="transition-delay:.25s">A working fleet of CNC, robotic, and heavy-forming equipment, monitored in real time and maintained on a strict preventive schedule across six facilities.</p>
       <div class="hero-alt-cta reveal in" style="transition-delay:.4s">
-        <a href="contact.html" class="btn btn-hot">Request a Quote
+        <a href="#" class="btn btn-hot" onclick="navigateTo404(event)">Request a Quote
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
         </a>
-        <a href="facilities.html" class="btn btn-ghost">View Facilities</a>
+        <a href="#" class="btn btn-ghost" onclick="navigateTo404(event)">View Facilities</a>
       </div>
       <div class="hero-alt-sub reveal in" style="transition-delay:.55s">212 ROBOTS DEPLOYED &nbsp;·&nbsp; 12 PRODUCTION LINES &nbsp;·&nbsp; 40+ YEARS RUNNING</div>
     </div>
@@ -426,30 +426,30 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
       <h2>Built on uptime,<br>not promises.</h2>
     </div>
     <div class="t-grid reveal-stagger">
-      <figure class="t-card glass">
-        <blockquote>"TORQUE re-tooled our stamping line in six weeks with zero unplanned downtime since. Their engineers actually walk the floor."</blockquote>
-        <figcaption class="t-foot">
-          <div class="t-mark">MW</div>
-          <div><div class="name">Marcus Webb</div><div class="role">VP of Operations</div><div class="co">RIDGELINE AUTO</div></div>
-        </figcaption>
-      </figure>
-      <figure class="t-card glass">
-        <blockquote>"The CMM data we get back with every batch has cut our incoming inspection time by half. Traceability is airtight."</blockquote>
-        <figcaption class="t-foot">
-          <div class="t-mark">PA</div>
-          <div><div class="name">Priya Anand</div><div class="role">Quality Director</div><div class="co">HELIX AEROSPACE</div></div>
-        </figcaption>
-      </figure>
-      <figure class="t-card glass">
-        <blockquote>"We've run their robotic weld cells three shifts a day for two years. Maintenance windows are the only downtime we schedule."</blockquote>
-        <figcaption class="t-foot">
-          <div class="t-mark">TB</div>
-          <div><div class="name">Tom Bergström</div><div class="role">Plant Manager</div><div class="co">NORTHFIELD ENERGY</div></div>
-        </figcaption>
-      </figure>
+        <figure class="t-card glass">
+          <blockquote>"TORQUE re-tooled our stamping line in six weeks with zero unplanned downtime since. Their engineers actually walk the floor."</blockquote>
+          <figcaption class="t-foot">
+            <div class="t-avatar"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80" alt="Portrait of Marcus Webb"></div>
+            <div><div class="name">Marcus Webb</div><div class="role">VP of Operations</div><div class="co">RIDGELINE AUTO</div></div>
+          </figcaption>
+        </figure>
+        <figure class="t-card glass">
+          <blockquote>"The CMM data we get back with every batch has cut our incoming inspection time by half. Traceability is airtight."</blockquote>
+          <figcaption class="t-foot">
+            <div class="t-avatar"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80" alt="Portrait of Priya Anand"></div>
+            <div><div class="name">Priya Anand</div><div class="role">Quality Director</div><div class="co">HELIX AEROSPACE</div></div>
+          </figcaption>
+        </figure>
+        <figure class="t-card glass">
+          <blockquote>"We've run their robotic weld cells three shifts a day for two years. Maintenance windows are the only downtime we schedule."</blockquote>
+          <figcaption class="t-foot">
+            <div class="t-avatar"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80" alt="Portrait of Tom Bergström"></div>
+            <div><div class="name">Tom Bergström</div><div class="role">Plant Manager</div><div class="co">NORTHFIELD ENERGY</div></div>
+          </figcaption>
+        </figure>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
 <section class="faq">
   <div class="wrap">
@@ -485,11 +485,11 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
       <h2>See the fleet<br>in action.</h2>
       <p>Schedule a facility walkthrough or get a quote against your drawing.</p>
       <div class="cta-buttons">
-        <a href="contact.html" class="btn btn-hot">
+        <a href="#" class="btn btn-hot" onclick="navigateTo404(event)">
           Request a Quote
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
         </a>
-        <a href="index.html" class="btn btn-ghost">Back to Home</a>
+        <a href="#" class="btn btn-ghost" onclick="navigateTo404(event)">Back to Home</a>
       </div>
     </div>
   </div>
@@ -545,6 +545,12 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
 </footer>
 
 <script>
+  // Function to navigate to 404.html for all buttons
+  function navigateTo404(event) {
+    event.preventDefault();
+    window.location.href = '404.html';
+  }
+
   const menuBtn = document.getElementById('menuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
   menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));

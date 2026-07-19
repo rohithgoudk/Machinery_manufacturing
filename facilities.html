@@ -16,8 +16,8 @@
   --font-display:'Oswald', sans-serif; --font-body:'Inter', system-ui, sans-serif; --font-mono:'JetBrains Mono', monospace;
 }
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-html,body{ background:var(--bg); color:var(--text); font-family:var(--font-body); -webkit-font-smoothing:antialiased; margin:0; padding:0; overflow-x:hidden; }
+html{scroll-behavior:smooth; overflow-x:clip;}
+html,body{ background:var(--bg); color:var(--text); font-family:var(--font-body); -webkit-font-smoothing:antialiased; margin:0; padding:0; }
 ::selection{ background: rgba(255,90,31,0.35); }
 a{ color:inherit; text-decoration:none; }
 img{ max-width:100%; display:block; }
@@ -69,12 +69,12 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .mobile-menu.open{ display:flex; }
 .mobile-menu a{ padding:12px 4px; border-top:1px solid var(--line-soft); color:var(--muted); font-size:14px; }
 .mobile-menu .btn{ margin-top:10px; width:100%; }
-.logo-slot{ width:84px; height:54px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.logo-slot{ width:120px; height:62px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
 .logo-slot img{ width:100%; height:100%; object-fit:contain; display:none; }
 .logo-slot img[src]{ display:block; }
 .logo-slot img[src] + .logo-fallback{ display:none; }
 .logo-slot .logo-fallback{ font-family:var(--font-mono); font-size:8px; letter-spacing:0.05em; color:var(--muted-2); text-align:center; line-height:1.2; }
-.foot-brand .logo-slot{ width:95px; height:95px; }
+.foot-brand .logo-slot{ width:135px; height:135px; }
 .btn-login{ background:transparent; border:1px solid var(--line); color:var(--text); font-size:13.5px; padding:10px 18px; }
 .btn-login:hover{ background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.2); }
 .desktop-only-btn{ display:none; } @media (min-width:900px){ .desktop-only-btn{ display:inline-flex; } }
@@ -91,6 +91,57 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .hero-visual{ position:relative; border-radius:20px; overflow:hidden; border:1px solid var(--line); aspect-ratio:4/5; }
 .hero-visual img{ width:100%; height:100%; object-fit:cover; }
 .hero-visual::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,10,11,0) 30%, rgba(10,10,11,0.85) 100%); }
+
+/* === Facilities hero redesign: radar/network scanner, no photography === */
+.hero-alt{ padding:58px 0 44px; overflow:hidden; }
+.hero-alt .hero-grid{ position:relative; }
+.hero-bg-fx{ position:absolute; inset:-40px -24px; z-index:0; pointer-events:none; overflow:hidden; }
+.hero-bg-fx .fx-grid{ position:absolute; inset:0; background-image:linear-gradient(rgba(154,165,177,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(154,165,177,0.10) 1px, transparent 1px); background-size:38px 38px; mask-image:radial-gradient(ellipse 60% 70% at 78% 45%, #000 0%, transparent 72%); opacity:.8; }
+.hero-bg-fx .fx-beam{ position:absolute; top:-20%; right:-10%; width:520px; height:520px; border-radius:50%; background:conic-gradient(from 210deg, rgba(255,90,31,0.22), transparent 55%); filter:blur(2px); animation:beamTurn 10s linear infinite; }
+@keyframes beamTurn{ to{ transform:rotate(360deg); } }
+.hero-bg-fx .fx-line{ position:absolute; height:1px; width:100%; background:linear-gradient(90deg, transparent, rgba(255,90,31,0.5), transparent); animation:lineSweep 5.5s ease-in-out infinite; opacity:0; }
+.hero-bg-fx .fx-line.l2{ animation-delay:2.2s; }
+@keyframes lineSweep{ 0%{ top:8%; opacity:0; } 8%{ opacity:.7; } 50%{ opacity:.35; } 92%{ opacity:0; } 100%{ top:92%; opacity:0; } }
+.hero-alt .eyebrow, .hero-alt h1, .hero-alt .lede, .hero-alt .hero-cta, .hero-alt .hero-sub{ position:relative; z-index:2; }
+
+.hero-map{ position:relative; z-index:2; aspect-ratio:1/1; max-width:440px; margin:0 auto; }
+.radar-ring{ position:absolute; border-radius:50%; border:1px solid rgba(154,165,177,0.16); top:50%; left:50%; transform:translate(-50%,-50%); }
+.radar-ring.r1{ width:100%; height:100%; }
+.radar-ring.r2{ width:74%; height:74%; }
+.radar-ring.r3{ width:48%; height:48%; }
+.radar-ring.r4{ width:22%; height:22%; border-color:rgba(255,90,31,0.28); }
+.radar-cross{ position:absolute; top:50%; left:0; right:0; height:1px; background:rgba(154,165,177,0.1); }
+.radar-cross.v{ top:0; bottom:0; left:50%; right:auto; width:1px; height:100%; }
+.radar-sweep{ position:absolute; inset:0; border-radius:50%; overflow:hidden; }
+.radar-sweep::before{ content:''; position:absolute; inset:0; background:conic-gradient(from 0deg, rgba(255,90,31,0.45), transparent 32%); animation:sweepRotate 4.2s linear infinite; }
+@keyframes sweepRotate{ to{ transform:rotate(360deg); } }
+.radar-hub{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:14px; height:14px; border-radius:50%; background:var(--text); box-shadow:0 0 0 4px rgba(255,255,255,0.08), 0 0 18px rgba(255,255,255,0.4); z-index:3; }
+.radar-hub-label{ position:absolute; top:calc(50% + 14px); left:50%; transform:translateX(-50%); font-family:var(--font-mono); font-size:9.5px; letter-spacing:.06em; color:var(--muted-2); white-space:nowrap; z-index:3; }
+.plant-pin{ position:absolute; width:9px; height:9px; border-radius:50%; background:var(--hot); box-shadow:0 0 10px var(--hot); z-index:3; }
+.plant-pin::after{ content:''; position:absolute; inset:-9px; border-radius:50%; border:1px solid rgba(255,90,31,0.45); animation:pinPulse 2.4s ease-out infinite; }
+.plant-pin.p2::after{ animation-delay:.4s; } .plant-pin.p3::after{ animation-delay:.8s; }
+.plant-pin.p4::after{ animation-delay:1.2s; } .plant-pin.p5::after{ animation-delay:1.6s; } .plant-pin.p6::after{ animation-delay:2s; }
+@keyframes pinPulse{ 0%{ transform:scale(0.6); opacity:.8; } 100%{ transform:scale(2.6); opacity:0; } }
+.plant-tag{ position:absolute; transform:translate(12px,-8px); font-family:var(--font-mono); font-size:9.5px; letter-spacing:.03em; color:var(--text); white-space:nowrap; z-index:3; display:flex; align-items:center; gap:5px; }
+.plant-tag span{ color:var(--muted-2); }
+
+/* facility cards: icon panel instead of photo */
+.fac-icon-panel{ height:130px; position:relative; display:flex; align-items:center; justify-content:center; background:linear-gradient(150deg, rgba(255,90,31,0.14), rgba(154,165,177,0.05)); overflow:hidden; }
+.fac-icon-panel::before{ content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size:20px 20px; }
+.fac-icon-panel svg{ position:relative; z-index:1; color:var(--hot); }
+.fac-icon-panel .fac-num{ position:absolute; right:14px; bottom:10px; font-family:var(--font-display); font-size:34px; color:rgba(255,255,255,0.07); z-index:0; }
+
+/* testimonial initials avatar */
+.t-avatar-initials{ width:42px; height:42px; border-radius:50%; flex-shrink:0; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:14px; color:var(--hot); background:rgba(255,90,31,0.12); }
+
+/* new: by-the-numbers stats section */
+.stats-section{ padding:64px 0; border-top:1px solid var(--line); }
+.stats-grid{ margin-top:40px; display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+@media (min-width:700px){ .stats-grid{ grid-template-columns:repeat(4,1fr); } }
+.stat-card{ border-radius:16px; padding:24px 20px; text-align:left; }
+.stat-card .stat-icon{ width:34px; height:34px; border-radius:9px; background:rgba(255,90,31,0.12); color:var(--hot); display:flex; align-items:center; justify-content:center; }
+.stat-value{ margin-top:16px; font-family:var(--font-display); font-size:30px; color:var(--text); }
+.stat-label{ margin-top:6px; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted-2); }
 
 .ticker-strip{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:rgba(0,0,0,0.35); backdrop-filter:blur(8px); overflow:hidden; }
 .ticker-track{ display:flex; gap:56px; padding:14px 0; white-space:nowrap; animation:tickerScroll 30s linear infinite; width:max-content; }
@@ -289,22 +340,39 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
   </div>
 </header>
 
-<section class="hero">
+<section class="hero hero-alt">
+  <div class="hero-bg-fx" aria-hidden="true">
+    <div class="fx-grid"></div>
+    <div class="fx-beam"></div>
+    <div class="fx-line l1"></div>
+    <div class="fx-line l2"></div>
+  </div>
   <div class="wrap hero-grid">
     <div>
-      <div class="eyebrow reveal in"><span class="dot"></span> GLOBAL FOOTPRINT <span class="tag">6 Facilities</span></div>
-      <h1 class="reveal in" style="transition-delay:.1s">Six plants.<br><span class="hot-gradient">One standard.</span></h1>
-      <p class="lede reveal in" style="transition-delay:.25s">Every TORQUE facility runs the same controls, the same tolerances, and the same reporting — wherever in India your order is actually built.</p>
+      <div class="eyebrow reveal in"><span class="dot"></span> GLOBAL FOOTPRINT <span class="tag">6 Facilities · Live</span></div>
+      <h1 class="reveal in" style="transition-delay:.1s">Six plants.<br><span class="hot-gradient">One signal.</span></h1>
+      <p class="lede reveal in" style="transition-delay:.25s">Every TORQUE facility reports into the same network — same controls, same tolerances, same standard — wherever in India your order is actually built.</p>
       <div class="hero-cta reveal in" style="transition-delay:.4s">
-        <a href="contact.html" class="btn btn-hot">Schedule a Visit
+        <a href="#" class="btn btn-hot" onclick="navigateTo404(event)">Schedule a Visit
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
         </a>
-        <a href="machinery.html" class="btn btn-ghost">View Machinery</a>
+        <a href="#" class="btn btn-ghost" onclick="navigateTo404(event)">View Machinery</a>
       </div>
       <div class="hero-sub reveal in" style="transition-delay:.55s">6 FACILITIES &nbsp;·&nbsp; 875k FT² COMBINED &nbsp;·&nbsp; 4 STATES</div>
     </div>
-    <div class="hero-visual reveal in" style="transition-delay:.3s">
-      <img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=800&q=80" alt="Chennai precision machining plant floor">
+    <div class="hero-map reveal in" style="transition-delay:.3s" aria-hidden="true">
+      <div class="radar-ring r1"></div>
+      <div class="radar-ring r2"></div>
+      <div class="radar-ring r3"></div>
+      <div class="radar-ring r4"></div>
+      <div class="radar-cross"></div>
+      <div class="radar-cross v"></div>
+      <div class="radar-sweep"></div>
+      <div class="radar-hub"></div>
+      
+      
+      <div class="plant-tag" style="top:66%; left:64%;"> <span>Chennai</span></div>
+      
     </div>
   </div>
 </section>
@@ -336,9 +404,6 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
       <div class="gallery-item"><img src="https://images.unsplash.com/photo-1666618090858-fbcee636bd3e?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Bengaluru inspection lab"><div class="gallery-cap">Bengaluru inspection lab</div></div>
       <div class="gallery-item"><img src="https://images.unsplash.com/photo-1716191299980-a6e8827ba10b?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Hyderabad metrology bay"><div class="gallery-cap">Hyderabad metrology bay</div></div>
       <div class="gallery-item"><img src="https://images.unsplash.com/photo-1515630771457-09367d0ae038?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Chennai CMM lab"><div class="gallery-cap">Chennai CMM lab</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1567177173026-402dd75a5ab7?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Pune weld bay"><div class="gallery-cap">Pune weld bay</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1717386255773-1e3037c81788?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Gujarat tool room"><div class="gallery-cap">Gujarat tool room</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1627807452502-0c8329fc710b?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Coimbatore yard"><div class="gallery-cap">Coimbatore yard</div></div>
     </div>
   </div>
 </section>
@@ -351,34 +416,65 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
     </div>
     <div class="fac-grid reveal-stagger">
       <div class="fac-card glass">
-        <div class="fac-img"><img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=800&q=80" alt="Chennai precision machining plant floor"><div class="fac-badge"><span class="p"></span>Running</div></div>
+        <div class="fac-icon-panel"><span class="fac-num">01</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><div class="fac-badge"><span class="p"></span>Running</div></div>
         <div class="fac-body"><h3>Plant 01 — Chennai</h3><div class="fac-loc">HEADQUARTERS · TAMIL NADU, IN</div><p>Flagship 5-axis machining and CMM inspection hall, coordinating all six facilities.</p>
           <div class="fac-stats"><div><b>210k ft²</b><span>FLOOR AREA</span></div><div><b>38</b><span>CNC CELLS</span></div></div></div>
       </div>
       <div class="fac-card glass">
-        <div class="fac-img"><img src="https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=800&q=80" alt="Pune robotic automation facility"><div class="fac-badge"><span class="p"></span>Running</div></div>
+        <div class="fac-icon-panel"><span class="fac-num">02</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 20V10a2 2 0 012-2h2M18 20V10a2 2 0 00-2-2h-2M6 20h12M12 4v4"/></svg><div class="fac-badge"><span class="p"></span>Running</div></div>
         <div class="fac-body"><h3>Plant 02 — Pune</h3><div class="fac-loc">AUTOMATION HUB · MAHARASHTRA, IN</div><p>Dedicated robotic cell integration and weld-path programming for automotive lines.</p>
           <div class="fac-stats"><div><b>140k ft²</b><span>FLOOR AREA</span></div><div><b>64</b><span>ROBOTIC CELLS</span></div></div></div>
       </div>
       <div class="fac-card glass">
-        <div class="fac-img"><img src="https://images.unsplash.com/photo-1565087921904-11a0806a5309?auto=format&fit=crop&w=800&q=80" alt="Heavy forming and press plant"><div class="fac-badge"><span class="p"></span>Running</div></div>
+        <div class="fac-icon-panel"><span class="fac-num">03</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="6" rx="1"/><rect x="4" y="15" width="16" height="6" rx="1"/><path d="M12 9v6"/></svg><div class="fac-badge"><span class="p"></span>Running</div></div>
         <div class="fac-body"><h3>Plant 03 — Gujarat</h3><div class="fac-loc">HEAVY FORMING · GUJARAT, IN</div><p>2,000-ton press lines and structural fabrication for pressure vessels and frames.</p>
           <div class="fac-stats"><div><b>260k ft²</b><span>FLOOR AREA</span></div><div><b>14</b><span>PRESS LINES</span></div></div></div>
       </div>
       <div class="fac-card glass">
-        <div class="fac-img"><img src="https://images.unsplash.com/photo-1515630771457-09367d0ae038?auto=format&fit=crop&w=800&q=80" alt="Structural fabrication bay"><div class="fac-badge"><span class="p"></span>Running</div></div>
+        <div class="fac-icon-panel"><span class="fac-num">04</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z"/></svg><div class="fac-badge"><span class="p"></span>Running</div></div>
         <div class="fac-body"><h3>Plant 04 — Coimbatore</h3><div class="fac-loc">FABRICATION · TAMIL NADU, IN</div><p>Laser cutting, press braking, and certified welding for structural frames and enclosures.</p>
           <div class="fac-stats"><div><b>95k ft²</b><span>FLOOR AREA</span></div><div><b>3</b><span>FAB LINES</span></div></div></div>
       </div>
       <div class="fac-card glass">
-        <div class="fac-img"><img src="https://images.unsplash.com/photo-1567177173026-402dd75a5ab7?auto=format&fit=crop&w=800&q=80" alt="Quality inspection lab"><div class="fac-badge"><span class="p"></span>Running</div></div>
+        <div class="fac-icon-panel"><span class="fac-num">05</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><div class="fac-badge"><span class="p"></span>Running</div></div>
         <div class="fac-body"><h3>Plant 05 — Bengaluru</h3><div class="fac-loc">QUALITY LAB · KARNATAKA, IN</div><p>Defense-grade inspection and vision systems verify every batch before it ships.</p>
           <div class="fac-stats"><div><b>70k ft²</b><span>FLOOR AREA</span></div><div><b>2</b><span>QA LINES</span></div></div></div>
       </div>
       <div class="fac-card glass">
-        <div class="fac-img"><img src="https://images.unsplash.com/photo-1647427060118-4911c9821b82?auto=format&fit=crop&w=800&q=80" alt="Metrology and calibration facility"><div class="fac-badge"><span class="p"></span>Running</div></div>
+        <div class="fac-icon-panel"><span class="fac-num">06</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="10" width="18" height="4" rx="1"/><path d="M6 10V6M18 10V6M6 14v4M18 14v4"/></svg><div class="fac-badge"><span class="p"></span>Running</div></div>
         <div class="fac-body"><h3>Plant 06 — Hyderabad</h3><div class="fac-loc">METROLOGY · TELANGANA, IN</div><p>CMM and surface metrology lab supporting calibration across the full network.</p>
           <div class="fac-stats"><div><b>60k ft²</b><span>FLOOR AREA</span></div><div><b>2</b><span>METROLOGY LINES</span></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="stats-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> BY THE NUMBERS <span class="tag">Network-wide</span></div>
+      <h2>What six plants<br>add up to.</h2>
+      <p>Aggregate figures across the full TORQUE network, updated as each facility reports in.</p>
+    </div>
+    <div class="stats-grid reveal-stagger">
+      <div class="stat-card glass">
+        <div class="stat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg></div>
+        <div class="stat-value" data-count="875" data-suffix="k ft²">0</div>
+        <div class="stat-label">Combined Floor Area</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div class="stat-value" data-count="120" data-suffix="+">0</div>
+        <div class="stat-label">CNC &amp; Press Cells</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <div class="stat-value" data-count="99" data-decimals="1" data-suffix="%">0</div>
+        <div class="stat-label">Fleet-Wide Uptime</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div class="stat-value" data-count="4" data-suffix=" states">0</div>
+        <div class="stat-label">Indian States Covered</div>
       </div>
     </div>
   </div>
@@ -390,30 +486,30 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
       <h2>Built on uptime,<br>not promises.</h2>
     </div>
     <div class="t-grid reveal-stagger">
-      <figure class="t-card glass">
-        <blockquote>"TORQUE re-tooled our stamping line in six weeks with zero unplanned downtime since. Their engineers actually walk the floor."</blockquote>
-        <figcaption class="t-foot">
-          <div class="t-avatar"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80" alt="Portrait of Marcus Webb"></div>
-          <div><div class="name">Marcus Webb</div><div class="role">VP of Operations</div><div class="co">RIDGELINE AUTO</div></div>
-        </figcaption>
-      </figure>
-      <figure class="t-card glass">
-        <blockquote>"The CMM data we get back with every batch has cut our incoming inspection time by half. Traceability is airtight."</blockquote>
-        <figcaption class="t-foot">
-          <div class="t-avatar"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80" alt="Portrait of Priya Anand"></div>
-          <div><div class="name">Priya Anand</div><div class="role">Quality Director</div><div class="co">HELIX AEROSPACE</div></div>
-        </figcaption>
-      </figure>
-      <figure class="t-card glass">
-        <blockquote>"We've run their robotic weld cells three shifts a day for two years. Maintenance windows are the only downtime we schedule."</blockquote>
-        <figcaption class="t-foot">
-          <div class="t-avatar"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80" alt="Portrait of Tom Bergström"></div>
-          <div><div class="name">Tom Bergström</div><div class="role">Plant Manager</div><div class="co">NORTHFIELD ENERGY</div></div>
-        </figcaption>
-      </figure>
+        <figure class="t-card glass">
+          <blockquote>"TORQUE re-tooled our stamping line in six weeks with zero unplanned downtime since. Their engineers actually walk the floor."</blockquote>
+          <figcaption class="t-foot">
+            <div class="t-avatar"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80" alt="Portrait of Marcus Webb"></div>
+            <div><div class="name">Marcus Webb</div><div class="role">VP of Operations</div><div class="co">RIDGELINE AUTO</div></div>
+          </figcaption>
+        </figure>
+        <figure class="t-card glass">
+          <blockquote>"The CMM data we get back with every batch has cut our incoming inspection time by half. Traceability is airtight."</blockquote>
+          <figcaption class="t-foot">
+            <div class="t-avatar"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80" alt="Portrait of Priya Anand"></div>
+            <div><div class="name">Priya Anand</div><div class="role">Quality Director</div><div class="co">HELIX AEROSPACE</div></div>
+          </figcaption>
+        </figure>
+        <figure class="t-card glass">
+          <blockquote>"We've run their robotic weld cells three shifts a day for two years. Maintenance windows are the only downtime we schedule."</blockquote>
+          <figcaption class="t-foot">
+            <div class="t-avatar"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80" alt="Portrait of Tom Bergström"></div>
+            <div><div class="name">Tom Bergström</div><div class="role">Plant Manager</div><div class="co">NORTHFIELD ENERGY</div></div>
+          </figcaption>
+        </figure>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 <section class="faq">
   <div class="wrap">
     <div class="section-head reveal">
@@ -447,11 +543,11 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
       <h2>Want to see<br>a plant firsthand?</h2>
       <p>Schedule a walkthrough at the facility closest to your production needs.</p>
       <div class="cta-buttons">
-        <a href="contact.html" class="btn btn-hot">
+        <a href="#" class="btn btn-hot" onclick="navigateTo404(event)">
           Schedule a Visit
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
         </a>
-        <a href="index.html" class="btn btn-ghost">Back to Home</a>
+        <a href="#" class="btn btn-ghost" onclick="navigateTo404(event)">Back to Home</a>
       </div>
     </div>
   </div>
@@ -507,6 +603,12 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
 </footer>
 
 <script>
+  // Function to navigate to 404.html for all buttons
+  function navigateTo404(event) {
+    event.preventDefault();
+    window.location.href = '404.html';
+  }
+
   const menuBtn = document.getElementById('menuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
   menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
@@ -518,6 +620,29 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
     });
   }, { threshold: 0.12 });
   revealEls.forEach(el => io.observe(el));
+
+  const statEls = document.querySelectorAll('.stat-value');
+  if (statEls.length) {
+    const animateStat = (el) => {
+      const target = parseFloat(el.dataset.count);
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const suffix = el.dataset.suffix || '';
+      const steps = 36;
+      let i = 0;
+      const t = setInterval(() => {
+        i++;
+        let cur = (target / steps) * i;
+        if (i >= steps) { cur = target; clearInterval(t); }
+        el.textContent = (decimals ? cur.toFixed(decimals) : Math.round(cur)) + suffix;
+      }, 28);
+    };
+    const statObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { animateStat(entry.target); statObs.unobserve(entry.target); }
+      });
+    }, { threshold: 0.4 });
+    statEls.forEach(el => statObs.observe(el));
+  }
 
   const priceToggle = document.getElementById('priceToggle');
   if (priceToggle) {

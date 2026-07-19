@@ -13,11 +13,12 @@
   --line:rgba(255,255,255,0.09); --line-soft:rgba(255,255,255,0.05);
   --text:#f2f1ee; --muted:rgba(242,241,238,0.58); --muted-2:rgba(242,241,238,0.36);
   --hot:#FF5A1F; --amber:#FFB800; --titanium:#9AA5B1; --ok:#3ddc84; --warn:#FFB800;
+  --blue:#2FD9FF; --blue-dim:rgba(47,217,255,0.14);
   --font-display:'Oswald', sans-serif; --font-body:'Inter', system-ui, sans-serif; --font-mono:'JetBrains Mono', monospace;
 }
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-html,body{ background:var(--bg); color:var(--text); font-family:var(--font-body); -webkit-font-smoothing:antialiased; margin:0; padding:0; overflow-x:hidden; }
+html{scroll-behavior:smooth; overflow-x:clip;}
+html,body{ background:var(--bg); color:var(--text); font-family:var(--font-body); -webkit-font-smoothing:antialiased; margin:0; padding:0; }
 ::selection{ background: rgba(255,90,31,0.35); }
 a{ color:inherit; text-decoration:none; }
 img{ max-width:100%; display:block; }
@@ -69,28 +70,48 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .mobile-menu.open{ display:flex; }
 .mobile-menu a{ padding:12px 4px; border-top:1px solid var(--line-soft); color:var(--muted); font-size:14px; }
 .mobile-menu .btn{ margin-top:10px; width:100%; }
-.logo-slot{ width:84px; height:54px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.logo-slot{ width:120px; height:62px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
 .logo-slot img{ width:100%; height:100%; object-fit:contain; display:none; }
 .logo-slot img[src]{ display:block; }
 .logo-slot img[src] + .logo-fallback{ display:none; }
 .logo-slot .logo-fallback{ font-family:var(--font-mono); font-size:8px; letter-spacing:0.05em; color:var(--muted-2); text-align:center; line-height:1.2; }
-.foot-brand .logo-slot{ width:95px; height:95px; }
+.foot-brand .logo-slot{ width:135px; height:135px; }
 .btn-login{ background:transparent; border:1px solid var(--line); color:var(--text); font-size:13.5px; padding:10px 18px; }
 .btn-login:hover{ background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.2); }
 .desktop-only-btn{ display:none; } @media (min-width:900px){ .desktop-only-btn{ display:inline-flex; } }
 
-.hero{ padding:64px 0 40px; }
-.hero-grid{ display:grid; grid-template-columns:1fr; gap:40px; align-items:center; }
-@media (min-width:960px){ .hero-grid{ grid-template-columns:1.05fr 0.95fr; gap:50px; } }
-.hero h1{ font-size:40px; line-height:1.0; }
-@media (min-width:640px){ .hero h1{ font-size:54px; } }
-@media (min-width:960px){ .hero h1{ font-size:58px; } }
-.hero p.lede{ margin-top:20px; color:var(--muted); font-size:15.5px; line-height:1.65; max-width:480px; }
-.hero-cta{ margin-top:28px; display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
-.hero-sub{ margin-top:14px; font-family:var(--font-mono); font-size:11.5px; color:var(--muted-2); letter-spacing:0.04em; }
-.hero-visual{ position:relative; border-radius:20px; overflow:hidden; border:1px solid var(--line); aspect-ratio:4/5; }
-.hero-visual img{ width:100%; height:100%; object-fit:cover; }
-.hero-visual::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,10,11,0) 30%, rgba(10,10,11,0.85) 100%); }
+/* ===== NEW HERO — schematic / blueprint direction (distinct from index.html) ===== */
+.hero-schematic{ padding:64px 0 46px; position:relative; overflow:hidden; }
+.schematic-bg{ position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+.schematic-grid{ position:absolute; inset:-2px; background-image:linear-gradient(rgba(47,217,255,0.09) 1px, transparent 1px), linear-gradient(90deg, rgba(47,217,255,0.09) 1px, transparent 1px); background-size:42px 42px; mask-image:radial-gradient(ellipse 60% 70% at 22% 30%, #000 35%, transparent 100%); }
+.schematic-diag{ position:absolute; inset:0; background-image:repeating-linear-gradient(115deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 26px); mask-image:radial-gradient(ellipse 55% 65% at 80% 75%, #000 30%, transparent 100%); }
+.schematic-glow{ position:absolute; width:640px; height:640px; border-radius:50%; background:radial-gradient(circle, var(--blue-dim), transparent 70%); top:-260px; right:-160px; animation:driftAlt 15s ease-in-out infinite alternate; }
+@keyframes driftAlt{ 0%{ transform:translate(0,0); } 100%{ transform:translate(-50px,40px); } }
+.schematic-scan{ position:absolute; left:-10%; right:-10%; height:120px; top:-140px; background:linear-gradient(180deg, transparent, rgba(47,217,255,0.10), transparent); animation:scanMove 6s linear infinite; }
+@keyframes scanMove{ 0%{ transform:translateY(0); } 100%{ transform:translateY(680px); } }
+.blueprint-gradient{ background-image:linear-gradient(to right,#0a2530 0%, #0f5a70 14%, #2FD9FF 42%, #b6f6ff 58%, #2FD9FF 76%, #0f5a70 90%, #0a2530 100%); background-size:220% auto; -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent; animation:shiny 6s linear infinite; }
+.hero-schematic-grid{ display:grid; grid-template-columns:1fr; gap:36px; align-items:center; position:relative; z-index:2; }
+@media (min-width:960px){ .hero-schematic-grid{ grid-template-columns:1.05fr 0.95fr; gap:48px; } }
+.hero-schematic h1{ font-size:40px; line-height:1.0; }
+@media (min-width:640px){ .hero-schematic h1{ font-size:54px; } }
+@media (min-width:960px){ .hero-schematic h1{ font-size:58px; } }
+.hero-schematic p.lede{ margin-top:20px; color:var(--muted); font-size:15.5px; line-height:1.65; max-width:480px; }
+.hero-schematic .hero-cta{ margin-top:28px; display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+.hero-schematic .hero-sub{ margin-top:14px; font-family:var(--font-mono); font-size:11.5px; color:var(--muted-2); letter-spacing:0.04em; }
+.eyebrow.blue{ color:var(--blue); }
+.eyebrow.blue .dot{ background:var(--blue); box-shadow:0 0 10px var(--blue); }
+.schematic-panel{ border-radius:20px; padding:22px 22px 14px; border:1px solid rgba(47,217,255,0.28); position:relative; }
+.schematic-panel::before{ background:linear-gradient(180deg, rgba(47,217,255,0.35) 0%, rgba(47,217,255,0.08) 22%, rgba(47,217,255,0) 45%, rgba(47,217,255,0) 60%, rgba(47,217,255,0.1) 82%, rgba(47,217,255,0.35) 100%); }
+.schematic-panel-head{ display:flex; align-items:center; justify-content:space-between; font-family:var(--font-mono); font-size:10.5px; letter-spacing:0.06em; color:var(--muted-2); text-transform:uppercase; padding-bottom:12px; border-bottom:1px solid rgba(47,217,255,0.18); margin-bottom:8px; }
+.schematic-panel-head .live{ display:flex; align-items:center; gap:6px; color:var(--blue); }
+.schematic-panel-head .live span{ width:6px; height:6px; border-radius:50%; background:var(--blue); box-shadow:0 0 8px var(--blue); animation:pulse 1.6s ease-in-out infinite; }
+@keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
+.schematic-svg{ width:100%; height:auto; display:block; }
+.schematic-node-label{ font-family:var(--font-mono); font-size:9.5px; fill:var(--muted); letter-spacing:0.03em; }
+.schematic-node-num{ font-family:var(--font-mono); font-size:12px; font-weight:600; fill:var(--blue); }
+.corner{ position:absolute; width:16px; height:16px; border:1px solid rgba(47,217,255,0.5); pointer-events:none; }
+.corner.tl{ top:-1px; left:-1px; border-right:none; border-bottom:none; border-radius:20px 0 0 0; }
+.corner.br{ bottom:-1px; right:-1px; border-left:none; border-top:none; border-radius:0 0 20px 0; }
 
 .ticker-strip{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:rgba(0,0,0,0.35); backdrop-filter:blur(8px); overflow:hidden; }
 .ticker-track{ display:flex; gap:56px; padding:14px 0; white-space:nowrap; animation:tickerScroll 30s linear infinite; width:max-content; }
@@ -106,9 +127,8 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .section-head p{ margin-top:16px; color:var(--muted); font-size:15px; line-height:1.65; }
 
 .gallery-grid{ margin-top:40px; display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
-@media (min-width:640px){ .gallery-grid{ grid-template-columns:repeat(3,1fr); } }
-@media (min-width:960px){ .gallery-grid{ grid-template-columns:repeat(5,1fr); } }
-.gallery-item{ position:relative; border-radius:14px; overflow:hidden; height:170px; border:1px solid var(--line); }
+@media (min-width:640px){ .gallery-grid{ grid-template-columns:repeat(4,1fr); } }
+.gallery-item{ position:relative; border-radius:14px; overflow:hidden; height:220px; border:1px solid var(--line); }
 .gallery-item img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.22,1,.36,1); }
 .gallery-item:hover img{ transform:scale(1.08); }
 .gallery-cap{ position:absolute; left:0; right:0; bottom:0; padding:8px 10px 7px; background:linear-gradient(180deg, rgba(10,10,11,0) 0%, rgba(10,10,11,0.9) 100%); font-family:var(--font-mono); font-size:10px; letter-spacing:.02em; color:var(--text); }
@@ -133,6 +153,21 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .process-content p{ margin-top:8px; color:var(--muted); font-size:13.5px; line-height:1.6; max-width:560px; }
 @media (min-width:760px){ .process-item{ grid-template-columns:64px 1fr 200px; align-items:center; } .process-tag{ font-family:var(--font-mono); font-size:11px; color:var(--muted-2); text-align:right; } }
 
+/* ===== NEW SECTION — Quality & Traceability spotlight ===== */
+.spotlight{ padding:64px 0; border-top:1px solid var(--line); }
+.spotlight-grid{ margin-top:40px; display:grid; grid-template-columns:1fr; gap:28px; align-items:center; }
+@media (min-width:900px){ .spotlight-grid{ grid-template-columns:0.9fr 1.1fr; gap:44px; } }
+.spotlight-img{ border-radius:18px; overflow:hidden; border:1px solid var(--line); aspect-ratio:4/3; }
+.spotlight-img img{ width:100%; height:100%; object-fit:cover; }
+.spotlight-stats{ margin-top:26px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.spotlight-stat{ border:1px solid var(--line); border-radius:12px; padding:16px; background:rgba(255,255,255,0.015); }
+.spotlight-stat b{ display:block; font-family:var(--font-display); font-size:24px; color:var(--hot); }
+.spotlight-stat span{ font-family:var(--font-mono); font-size:10.5px; color:var(--muted-2); letter-spacing:0.03em; }
+.spotlight-list{ margin-top:22px; list-style:none; padding:0; }
+.spotlight-list li{ display:flex; gap:12px; align-items:flex-start; font-size:13.5px; color:var(--muted); line-height:1.55; margin-bottom:12px; }
+.spotlight-list li b{ color:var(--text); }
+.spotlight-check{ width:20px; height:20px; border-radius:50%; background:rgba(61,220,132,0.14); color:var(--ok); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+
 .fac-grid{ margin-top:40px; display:grid; grid-template-columns:1fr; gap:20px; }
 @media (min-width:700px){ .fac-grid{ grid-template-columns:repeat(3,1fr); } }
 .fac-card{ border-radius:16px; overflow:hidden; transition:transform .4s cubic-bezier(.22,1,.36,1); }
@@ -156,8 +191,7 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .t-card{ border-radius:18px; padding:24px; display:flex; flex-direction:column; }
 .t-card blockquote{ margin:0; font-size:14px; line-height:1.65; color:rgba(242,241,238,0.86); }
 .t-foot{ margin-top:20px; padding-top:16px; border-top:1px solid var(--line); display:flex; align-items:center; gap:12px; }
-.t-avatar{ width:42px; height:42px; border-radius:50%; overflow:hidden; flex-shrink:0; border:1px solid var(--line); }
-.t-avatar img{ width:100%; height:100%; object-fit:cover; }
+.t-avatar{ width:42px; height:42px; border-radius:50%; overflow:hidden; flex-shrink:0; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#FF5A1F,#7a2b0c); font-family:var(--font-display); font-size:14px; color:#fff; }
 .t-foot .name{ font-size:13.5px; font-weight:700; } .t-foot .role{ font-size:11.5px; color:var(--muted); margin-top:2px; }
 .t-foot .co{ font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:var(--hot); margin-top:6px; }
 
@@ -171,46 +205,6 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .faq-a{ max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.22,1,.36,1); }
 .faq-a p{ margin:0 0 20px; padding:0 4px; color:var(--muted); font-size:13.5px; line-height:1.65; max-width:640px; }
 .faq-item.open .faq-a{ max-height:220px; }
-
-.pricing{ padding:70px 0; position:relative; }
-.price-toggle-wrap{ display:flex; justify-content:center; align-items:center; gap:12px; margin-top:14px; }
-.toggle-label{ font-family:var(--font-mono); font-size:12.5px; color:var(--muted); }
-.toggle{ width:48px; height:26px; border-radius:100px; background:rgba(255,255,255,0.08); border:1px solid var(--line); position:relative; cursor:pointer; padding:0; }
-.toggle-knob{ width:18px; height:18px; border-radius:50%; background:var(--titanium); position:absolute; top:3px; left:3px; transition:all .3s cubic-bezier(.4,0,.2,1); }
-.toggle.active{ background:rgba(255,90,31,0.25); border-color:rgba(255,90,31,0.4); }
-.toggle.active .toggle-knob{ transform:translateX(22px); background:var(--hot); }
-.save-badge{ font-family:var(--font-mono); font-size:10.5px; color:var(--ok); }
-.price-grid{ margin-top:36px; display:grid; grid-template-columns:1fr; gap:20px; }
-@media (min-width:860px){ .price-grid{ grid-template-columns:repeat(3,1fr); } }
-.price-card{ border-radius:20px; padding:32px 24px; display:flex; flex-direction:column; border:1px solid var(--line); background:linear-gradient(160deg, rgba(255,255,255,0.03), rgba(255,255,255,0.005)); transition:transform .4s cubic-bezier(.22,1,.36,1), border-color .4s; }
-.price-card:hover{ transform:translateY(-8px); border-color:rgba(255,90,31,0.4); }
-.price-card.featured{ border-color:rgba(255,90,31,0.5); background:linear-gradient(160deg, rgba(255,90,31,0.08), rgba(255,255,255,0.01)); }
-.price-tier{ font-size:13px; color:var(--muted); font-family:var(--font-mono); }
-.price-value{ font-family:var(--font-display); font-size:38px; margin-top:10px; }
-.price-value span{ font-size:14px; color:var(--muted); font-family:var(--font-mono); }
-.price-desc{ margin-top:14px; color:var(--muted); font-size:13px; line-height:1.6; min-height:3.2em; }
-.price-list{ list-style:none; margin:24px 0 0; padding:0; flex:1; }
-.price-list li{ display:flex; align-items:flex-start; gap:12px; font-size:13px; color:rgba(242,241,238,0.85); margin-bottom:13px; line-height:1.4; }
-.check-circle{ width:20px; height:20px; border-radius:50%; background:rgba(255,90,31,0.14); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--hot); }
-.price-btn{ margin-top:24px; width:100%; padding:12px; border-radius:9px; background:transparent; border:1px solid var(--line); color:var(--text); font-weight:600; font-size:13px; cursor:pointer; transition:all .25s; }
-.price-card.featured .price-btn{ background:var(--hot); border-color:var(--hot); color:#fff; }
-.price-btn:hover{ background:rgba(255,255,255,0.06); }
-.price-card.featured .price-btn:hover{ background:#e0450f; }
-
-.contact-grid{ margin-top:40px; display:grid; grid-template-columns:1fr; gap:20px; }
-@media (min-width:860px){ .contact-grid{ grid-template-columns:1.1fr 0.9fr; } }
-.contact-card{ border-radius:18px; padding:28px; }
-.form-row{ display:grid; grid-template-columns:1fr; gap:14px; margin-top:18px; }
-@media (min-width:600px){ .form-row.two{ grid-template-columns:1fr 1fr; } }
-.form-field label{ display:block; font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted-2); margin-bottom:8px; }
-.form-field input, .form-field textarea, .form-field select{ width:100%; background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:10px; padding:12px 14px; color:var(--text); font-family:inherit; font-size:13.5px; outline:none; transition:border-color .2s ease; }
-.form-field input:focus, .form-field textarea:focus, .form-field select:focus{ border-color:rgba(255,90,31,0.5); }
-.form-field textarea{ resize:vertical; min-height:110px; }
-.contact-info-item{ display:flex; gap:14px; padding:16px 0; border-top:1px solid var(--line); }
-.contact-info-item:first-child{ border-top:none; }
-.contact-info-icon{ width:38px; height:38px; border-radius:10px; background:rgba(255,90,31,0.12); color:var(--hot); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.contact-info-item h4{ font-size:13.5px; font-weight:700; }
-.contact-info-item p{ margin-top:4px; font-size:13px; color:var(--muted); line-height:1.5; }
 
 .final-cta{ padding:64px 0 90px; }
 .cta-box{ border-radius:24px; padding:52px 30px; text-align:center; position:relative; overflow:hidden; }
@@ -289,38 +283,87 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
   </div>
 </header>
 
-<section class="hero">
-  <div class="wrap hero-grid">
+<!-- ===== NEW HERO: schematic / blueprint direction, no photo, cyan accent instead of orange glow ===== -->
+<section class="hero-schematic" id="top-hero">
+  <div class="schematic-bg" aria-hidden="true">
+    <div class="schematic-grid"></div>
+    <div class="schematic-diag"></div>
+    <div class="schematic-glow"></div>
+    <div class="schematic-scan"></div>
+  </div>
+  <div class="wrap hero-schematic-grid">
     <div>
-      <div class="eyebrow reveal in"><span class="dot"></span> HOW WE BUILD <span class="tag">6 stages</span></div>
-      <h1 class="reveal in" style="transition-delay:.1s">From drawing<br><span class="hot-gradient">to dock.</span></h1>
-      <p class="lede reveal in" style="transition-delay:.25s">Every order moves through the same six controlled stages, tracked start to finish — no shortcuts, no guesswork, no surprises on the delivery date.</p>
+      <div class="eyebrow blue reveal in"><span class="dot"></span> HOW WE BUILD <span class="tag">6 stages, one flow</span></div>
+      <h1 class="reveal in" style="transition-delay:.1s">Every order<br><span class="blueprint-gradient">runs the same line.</span></h1>
+      <p class="lede reveal in" style="transition-delay:.25s">No stage is skipped and nothing moves forward without sign-off from the one before it — the routing on the right is the exact path every job takes, tracked in real time.</p>
       <div class="hero-cta reveal in" style="transition-delay:.4s">
-        <a href="contact.html" class="btn btn-hot">Start a Project
+        <a href="#" class="btn btn-hot" onclick="navigateTo404(event)">Start a Project
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
         </a>
-        <a href="capabilities.html" class="btn btn-ghost">View Capabilities</a>
+        <a href="#" class="btn btn-ghost" onclick="navigateTo404(event)">View Capabilities</a>
       </div>
       <div class="hero-sub reveal in" style="transition-delay:.55s">2-4 DAY DESIGN REVIEW &nbsp;·&nbsp; PER-BATCH QA &nbsp;·&nbsp; FULL TRACEABILITY</div>
     </div>
-    <div class="hero-visual reveal in" style="transition-delay:.3s">
-      <img src="https://images.unsplash.com/photo-1627807452502-0c8329fc710b?auto=format&fit=crop&w=800&q=80" alt="Close up of industrial gear component">
+
+    <div class="schematic-panel glass reveal in" style="transition-delay:.3s">
+      <div class="corner tl"></div><div class="corner br"></div>
+      <div class="schematic-panel-head">
+        <span>ROUTING — JOB #TQ-4482</span>
+        <span class="live"><span></span>LIVE</span>
+      </div>
+      <svg viewBox="0 0 320 400" class="schematic-svg" xmlns="http://www.w3.org/2000/svg">
+        <path d="M70,40 L250,110 L70,180 L250,250 L70,320 L250,380" fill="none" stroke="rgba(47,217,255,0.32)" stroke-width="2" stroke-dasharray="5 7"/>
+        <circle r="4.5" fill="#2FD9FF">
+          <animateMotion dur="7s" repeatCount="indefinite" path="M70,40 L250,110 L70,180 L250,250 L70,320 L250,380"/>
+        </circle>
+        <g>
+          <circle cx="70" cy="40" r="20" fill="#101317" stroke="#2FD9FF" stroke-width="1.5"/>
+          <text x="70" y="45" text-anchor="middle" class="schematic-node-num">01</text>
+          <text x="98" y="44" class="schematic-node-label">Design &amp; Eng.</text>
+        </g>
+        <g>
+          <circle cx="250" cy="110" r="20" fill="#101317" stroke="#2FD9FF" stroke-width="1.5"/>
+          <text x="250" y="115" text-anchor="middle" class="schematic-node-num">02</text>
+          <text x="140" y="114" class="schematic-node-label">Prototyping</text>
+        </g>
+        <g>
+          <circle cx="70" cy="180" r="20" fill="#101317" stroke="#2FD9FF" stroke-width="1.5"/>
+          <text x="70" y="185" text-anchor="middle" class="schematic-node-num">03</text>
+          <text x="98" y="184" class="schematic-node-label">CNC Machining</text>
+        </g>
+        <g>
+          <circle cx="250" cy="250" r="20" fill="#101317" stroke="#2FD9FF" stroke-width="1.5"/>
+          <text x="250" y="255" text-anchor="middle" class="schematic-node-num">04</text>
+          <text x="128" y="254" class="schematic-node-label">Assembly</text>
+        </g>
+        <g>
+          <circle cx="70" cy="320" r="20" fill="#101317" stroke="#2FD9FF" stroke-width="1.5"/>
+          <text x="70" y="325" text-anchor="middle" class="schematic-node-num">05</text>
+          <text x="98" y="324" class="schematic-node-label">Quality Test</text>
+        </g>
+        <g>
+          <circle cx="250" cy="380" r="20" fill="#101317" stroke="#2FD9FF" stroke-width="1.5"/>
+          <text x="250" y="385" text-anchor="middle" class="schematic-node-num">06</text>
+          <text x="128" y="384" class="schematic-node-label">Shipping</text>
+        </g>
+      </svg>
     </div>
   </div>
 </section>
+
 <section class="ticker-strip">
   <div class="ticker-track">
     <div class="ticker-item"><b>6 STAGES</b><span class="sep">/</span>Design To Delivery</div>
-    <div class="ticker-item"><b>2-4 DAYS</b><span class="sep">/</span>Design & Engineering Review</div>
+    <div class="ticker-item"><b>2-4 DAYS</b><span class="sep">/</span>Design &amp; Engineering Review</div>
     <div class="ticker-item"><b>PER BATCH</b><span class="sep">/</span>CMM Quality Sign-off</div>
     <div class="ticker-item"><b>FULL TRACEABILITY</b><span class="sep">/</span>Material To Finished Part</div>
     <div class="ticker-item"><b>6 STAGES</b><span class="sep">/</span>Design To Delivery</div>
-    <div class="ticker-item"><b>2-4 DAYS</b><span class="sep">/</span>Design & Engineering Review</div>
+    <div class="ticker-item"><b>2-4 DAYS</b><span class="sep">/</span>Design &amp; Engineering Review</div>
     <div class="ticker-item"><b>PER BATCH</b><span class="sep">/</span>CMM Quality Sign-off</div>
     <div class="ticker-item"><b>FULL TRACEABILITY</b><span class="sep">/</span>Material To Finished Part</div>
-    
   </div>
 </section>
+
 <section class="section-pad">
   <div class="wrap">
     <div class="section-head reveal">
@@ -331,17 +374,12 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
     <div class="gallery-grid reveal-stagger">
       <div class="gallery-item"><img src="https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Design review"><div class="gallery-cap">Design review</div></div>
       <div class="gallery-item"><img src="https://images.unsplash.com/photo-1580901369227-308f6f40bdeb?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="CAD modeling"><div class="gallery-cap">CAD modeling</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1606337321936-02d1b1a4d5ef?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="First-article sample"><div class="gallery-cap">First-article sample</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="CNC production run"><div class="gallery-cap">CNC production run</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Robotic assembly"><div class="gallery-cap">Robotic assembly</div></div>
       <div class="gallery-item"><img src="https://images.unsplash.com/photo-1565087921904-11a0806a5309?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="CMM inspection"><div class="gallery-cap">CMM inspection</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1647427060118-4911c9821b82?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Load testing"><div class="gallery-cap">Load testing</div></div>
       <div class="gallery-item"><img src="https://images.unsplash.com/photo-1666618090858-fbcee636bd3e?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Custom crating"><div class="gallery-cap">Custom crating</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1716191299980-a6e8827ba10b?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Freight staging"><div class="gallery-cap">Freight staging</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1515630771457-09367d0ae038?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Final walkaround"><div class="gallery-cap">Final walkaround</div></div>
     </div>
   </div>
 </section>
+
 <section class="section-pad">
   <div class="wrap">
     <div class="section-head reveal">
@@ -359,6 +397,7 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
     </div>
   </div>
 </section>
+
 <section class="section-pad" style="padding-top:0">
   <div class="wrap">
     <div class="section-head reveal">
@@ -367,16 +406,45 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
     </div>
     <div class="cap-grid reveal-stagger">
       <div class="cap-card glass">
-        <div class="cap-img"><img src="https://images.unsplash.com/photo-1580901369227-308f6f40bdeb?auto=format&fit=crop&w=800&q=80" alt="Site and yard machinery"></div>
+        <div class="cap-img"><img src="https://images.unsplash.com/photo-1647427060118-4911c9821b82?auto=format&fit=crop&w=800&q=80" alt="Control room overseeing the production floor"></div>
         <div class="cap-body"><h3>One facility, one owner</h3><p>Every stage happens under one roof, so there's a single point of accountability from drawing to dock.</p></div>
       </div>
       <div class="cap-card glass">
-        <div class="cap-img"><img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=800&q=80" alt="Chennai plant floor"></div>
+        <div class="cap-img"><img src="https://images.unsplash.com/photo-1513828646384-e4d8ec30d2bb?auto=format&fit=crop&w=800&q=80" alt="Industrial machine on the production line"></div>
         <div class="cap-body"><h3>Live status on every job</h3><p>Track stage, progress, and expected completion through your account dashboard at any time.</p></div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- ===== NEW SECTION: Quality & Traceability spotlight ===== -->
+<section class="spotlight" id="quality">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> STAGE 05, IN DEPTH</div>
+      <h2>Quality isn't a<br>final check. It's a record.</h2>
+      <p>Every batch carries its own inspection file — dimensional data, material certs, and operator sign-off — from the first cut to the crate.</p>
+    </div>
+    <div class="spotlight-grid reveal-stagger">
+      <div class="spotlight-img">
+        <img src="https://images.unsplash.com/photo-1717386255773-1e3037c81788?auto=format&fit=crop&w=900&q=80" alt="CMM measuring arm inspecting a machined part">
+      </div>
+      <div>
+        <ul class="spotlight-list">
+          <li><span class="spotlight-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span><span><b>CMM dimensional reports</b> generated per batch, matched against the original drawing.</span></li>
+          <li><span class="spotlight-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span><span><b>Material certificates</b> traced from mill source to the finished, packaged unit.</span></li>
+          <li><span class="spotlight-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span><span><b>Load and function testing</b> logged and signed off before a batch clears for shipping.</span></li>
+        </ul>
+        <div class="spotlight-stats">
+          <div class="spotlight-stat"><b>100%</b><span>BATCHES CMM-CHECKED</span></div>
+          <div class="spotlight-stat"><b>0.34%</b><span>AVG SCRAP RATE</span></div>
+          <div class="spotlight-stat"><b>24hr</b><span>REPORT TURNAROUND</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="testimonials">
   <div class="wrap">
     <div class="section-head reveal">
@@ -384,30 +452,31 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
       <h2>Built on uptime,<br>not promises.</h2>
     </div>
     <div class="t-grid reveal-stagger">
-      <figure class="t-card glass">
-        <blockquote>"TORQUE re-tooled our stamping line in six weeks with zero unplanned downtime since. Their engineers actually walk the floor."</blockquote>
-        <figcaption class="t-foot">
-          <div class="t-avatar"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80" alt="Portrait of Marcus Webb"></div>
-          <div><div class="name">Marcus Webb</div><div class="role">VP of Operations</div><div class="co">RIDGELINE AUTO</div></div>
-        </figcaption>
-      </figure>
-      <figure class="t-card glass">
-        <blockquote>"The CMM data we get back with every batch has cut our incoming inspection time by half. Traceability is airtight."</blockquote>
-        <figcaption class="t-foot">
-          <div class="t-avatar"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80" alt="Portrait of Priya Anand"></div>
-          <div><div class="name">Priya Anand</div><div class="role">Quality Director</div><div class="co">HELIX AEROSPACE</div></div>
-        </figcaption>
-      </figure>
-      <figure class="t-card glass">
-        <blockquote>"We've run their robotic weld cells three shifts a day for two years. Maintenance windows are the only downtime we schedule."</blockquote>
-        <figcaption class="t-foot">
-          <div class="t-avatar"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80" alt="Portrait of Tom Bergström"></div>
-          <div><div class="name">Tom Bergström</div><div class="role">Plant Manager</div><div class="co">NORTHFIELD ENERGY</div></div>
-        </figcaption>
-      </figure>
+        <figure class="t-card glass">
+          <blockquote>"TORQUE re-tooled our stamping line in six weeks with zero unplanned downtime since. Their engineers actually walk the floor."</blockquote>
+          <figcaption class="t-foot">
+            <div class="t-avatar"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80" alt="Portrait of Marcus Webb"></div>
+            <div><div class="name">Marcus Webb</div><div class="role">VP of Operations</div><div class="co">RIDGELINE AUTO</div></div>
+          </figcaption>
+        </figure>
+        <figure class="t-card glass">
+          <blockquote>"The CMM data we get back with every batch has cut our incoming inspection time by half. Traceability is airtight."</blockquote>
+          <figcaption class="t-foot">
+            <div class="t-avatar"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80" alt="Portrait of Priya Anand"></div>
+            <div><div class="name">Priya Anand</div><div class="role">Quality Director</div><div class="co">HELIX AEROSPACE</div></div>
+          </figcaption>
+        </figure>
+        <figure class="t-card glass">
+          <blockquote>"We've run their robotic weld cells three shifts a day for two years. Maintenance windows are the only downtime we schedule."</blockquote>
+          <figcaption class="t-foot">
+            <div class="t-avatar"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80" alt="Portrait of Tom Bergström"></div>
+            <div><div class="name">Tom Bergström</div><div class="role">Plant Manager</div><div class="co">NORTHFIELD ENERGY</div></div>
+          </figcaption>
+        </figure>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+
 <section class="faq">
   <div class="wrap">
     <div class="section-head reveal">
@@ -434,6 +503,7 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
     </div>
   </div>
 </section>
+
 <section class="final-cta" id="contact-cta">
   <div class="wrap">
     <div class="cta-box glass reveal">
@@ -441,11 +511,11 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
       <h2>Ready to start<br>the first stage?</h2>
       <p>Send your drawing and we'll walk you through the design review.</p>
       <div class="cta-buttons">
-        <a href="contact.html" class="btn btn-hot">
+        <a href="#" class="btn btn-hot" onclick="navigateTo404(event)">
           Start a Project
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
         </a>
-        <a href="index.html" class="btn btn-ghost">Back to Home</a>
+        <a href="#" class="btn btn-ghost" onclick="navigateTo404(event)">Back to Home</a>
       </div>
     </div>
   </div>
@@ -501,6 +571,12 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
 </footer>
 
 <script>
+  // Function to navigate to 404.html for all buttons
+  function navigateTo404(event) {
+    event.preventDefault();
+    window.location.href = '404.html';
+  }
+
   const menuBtn = document.getElementById('menuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
   menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
@@ -513,23 +589,7 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
   }, { threshold: 0.12 });
   revealEls.forEach(el => io.observe(el));
 
-  const priceToggle = document.getElementById('priceToggle');
-  if (priceToggle) {
-    let yearly = false;
-    priceToggle.addEventListener('click', () => {
-      yearly = !yearly;
-      priceToggle.classList.toggle('active', yearly);
-      document.querySelectorAll('.price-amt').forEach(el => {
-        const val = yearly ? el.dataset.y : el.dataset.m;
-        el.textContent = '$' + Number(val).toLocaleString();
-      });
-      document.querySelectorAll('.price-value span:last-child').forEach(s => {
-        if(s.textContent.includes('/mo')) s.textContent = yearly ? '/mo (billed yearly)' : '/mo';
-      });
-    });
-  }
-
-  document.querySelectorAll('.faq-item').for
+  document.querySelectorAll('.faq-item').forEach(item => {
     const btn = item.querySelector('.faq-q');
     btn.addEventListener('click', () => {
       document.querySelectorAll('.faq-item').forEach(i => { if(i !== item) i.classList.remove('open'); });

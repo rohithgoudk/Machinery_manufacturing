@@ -16,8 +16,8 @@
   --font-display:'Oswald', sans-serif; --font-body:'Inter', system-ui, sans-serif; --font-mono:'JetBrains Mono', monospace;
 }
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-html,body{ background:var(--bg); color:var(--text); font-family:var(--font-body); -webkit-font-smoothing:antialiased; margin:0; padding:0; overflow-x:hidden; }
+html{scroll-behavior:smooth; overflow-x:clip;}
+html,body{ background:var(--bg); color:var(--text); font-family:var(--font-body); -webkit-font-smoothing:antialiased; margin:0; padding:0; }
 ::selection{ background: rgba(255,90,31,0.35); }
 a{ color:inherit; text-decoration:none; }
 img{ max-width:100%; display:block; }
@@ -69,28 +69,66 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .mobile-menu.open{ display:flex; }
 .mobile-menu a{ padding:12px 4px; border-top:1px solid var(--line-soft); color:var(--muted); font-size:14px; }
 .mobile-menu .btn{ margin-top:10px; width:100%; }
-.logo-slot{ width:84px; height:54px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.logo-slot{ width:120px; height:62px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
 .logo-slot img{ width:100%; height:100%; object-fit:contain; display:none; }
 .logo-slot img[src]{ display:block; }
 .logo-slot img[src] + .logo-fallback{ display:none; }
 .logo-slot .logo-fallback{ font-family:var(--font-mono); font-size:8px; letter-spacing:0.05em; color:var(--muted-2); text-align:center; line-height:1.2; }
-.foot-brand .logo-slot{ width:95px; height:95px; }
+.foot-brand .logo-slot{ width:135px; height:135px; }
 .btn-login{ background:transparent; border:1px solid var(--line); color:var(--text); font-size:13.5px; padding:10px 18px; }
 .btn-login:hover{ background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.2); }
 .desktop-only-btn{ display:none; } @media (min-width:900px){ .desktop-only-btn{ display:inline-flex; } }
 
-.hero{ padding:64px 0 40px; }
-.hero-grid{ display:grid; grid-template-columns:1fr; gap:40px; align-items:center; }
-@media (min-width:960px){ .hero-grid{ grid-template-columns:1.05fr 0.95fr; gap:50px; } }
-.hero h1{ font-size:40px; line-height:1.0; }
-@media (min-width:640px){ .hero h1{ font-size:54px; } }
-@media (min-width:960px){ .hero h1{ font-size:58px; } }
-.hero p.lede{ margin-top:20px; color:var(--muted); font-size:15.5px; line-height:1.65; max-width:480px; }
-.hero-cta{ margin-top:28px; display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
-.hero-sub{ margin-top:14px; font-family:var(--font-mono); font-size:11.5px; color:var(--muted-2); letter-spacing:0.04em; }
-.hero-visual{ position:relative; border-radius:20px; overflow:hidden; border:1px solid var(--line); aspect-ratio:4/5; }
-.hero-visual img{ width:100%; height:100%; object-fit:cover; }
-.hero-visual::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,10,11,0) 30%, rgba(10,10,11,0.85) 100%); }
+/* ============ HERO — SLA COMMAND DIAL (distinct from index.html) ============ */
+.hero-sla{ padding:60px 0 44px; position:relative; overflow:hidden; }
+.hero-sla-bg{ position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; background:
+  radial-gradient(ellipse 60% 50% at 78% 30%, rgba(255,90,31,0.14), transparent 65%),
+  #0a0a0b; }
+.hero-sla-bg .diamond-grid{
+  position:absolute; inset:-20%;
+  background-image:
+    linear-gradient(45deg, rgba(255,255,255,0.045) 1px, transparent 1px),
+    linear-gradient(-45deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+  background-size:46px 46px;
+  mask-image:radial-gradient(ellipse 65% 60% at 72% 35%, #000 30%, transparent 78%);
+  animation:diamondDrift 26s linear infinite;
+}
+@keyframes diamondDrift{ 0%{ background-position:0 0,0 0; } 100%{ background-position:92px 0, -92px 0; } }
+.hero-sla-bg .ping-ring{ position:absolute; top:30%; right:14%; width:120px; height:120px; margin:-60px 0 0 -60px; border-radius:50%; border:1px solid rgba(255,90,31,0.5); opacity:0; animation:pingRing 4.5s cubic-bezier(.2,.7,.3,1) infinite; }
+.hero-sla-bg .ping-ring.r2{ animation-delay:1.5s; }
+.hero-sla-bg .ping-ring.r3{ animation-delay:3s; }
+@keyframes pingRing{ 0%{ width:40px; height:40px; margin:-20px 0 0 -20px; opacity:0.55; } 100%{ width:640px; height:640px; margin:-320px 0 0 -320px; opacity:0; } }
+.hero-sla-bg .scan-line{ position:absolute; left:0; right:0; height:120px; top:-120px; background:linear-gradient(180deg, transparent, rgba(255,90,31,0.06), transparent); animation:scanDown 7s ease-in-out infinite; }
+@keyframes scanDown{ 0%{ top:-120px; } 100%{ top:100%; } }
+
+.hero-sla-grid{ display:grid; grid-template-columns:1fr; gap:44px; align-items:center; }
+@media (min-width:960px){ .hero-sla-grid{ grid-template-columns:1.08fr 0.92fr; gap:36px; } }
+.hero-sla h1{ font-size:38px; line-height:1.02; }
+@media (min-width:640px){ .hero-sla h1{ font-size:52px; } }
+@media (min-width:960px){ .hero-sla h1{ font-size:56px; } }
+.hero-sla p.lede{ margin-top:20px; color:var(--muted); font-size:15.5px; line-height:1.65; max-width:480px; }
+.hero-sla-cta{ margin-top:28px; display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+.hero-sla-sub{ margin-top:16px; font-family:var(--font-mono); font-size:11.5px; color:var(--muted-2); letter-spacing:0.04em; }
+
+.dial-stage{ position:relative; display:flex; align-items:center; justify-content:center; }
+.dial-ambient{ position:absolute; width:112%; height:112%; border-radius:50%; border:1px dashed rgba(255,255,255,0.12); animation:spinSlow 46s linear infinite; }
+.dial-ambient.two{ width:126%; height:126%; border-color:rgba(255,90,31,0.14); animation-duration:64s; animation-direction:reverse; }
+@keyframes spinSlow{ 0%{ transform:rotate(0deg); } 100%{ transform:rotate(360deg); } }
+.dial-card{ position:relative; width:100%; max-width:340px; padding:26px 22px 22px; border-radius:20px; }
+.dial-svg-wrap{ position:relative; width:100%; aspect-ratio:1; }
+.dial-svg-wrap svg{ width:100%; height:100%; display:block; }
+.dial-track{ fill:none; stroke:rgba(255,255,255,0.07); stroke-width:9; }
+.dial-arc{ fill:none; stroke-width:9; stroke-linecap:round; transition:stroke-dashoffset 1.6s cubic-bezier(.22,1,.36,1); }
+.dial-hand{ transform-origin:120px 120px; animation:handSweep 9s linear infinite; }
+.dial-center-label{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.1em; fill:var(--muted-2); text-transform:uppercase; }
+.dial-center-value{ font-family:'Oswald', sans-serif; font-size:34px; font-weight:600; fill:var(--text); }
+.dial-center-sub{ font-family:var(--font-mono); font-size:8.5px; fill:var(--muted-2); letter-spacing:0.06em; }
+@keyframes handSweep{ 0%{ transform:rotate(0deg); } 100%{ transform:rotate(360deg); } }
+.dial-legend{ margin-top:18px; display:flex; flex-direction:column; gap:10px; }
+.dial-legend-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; border-radius:10px; background:rgba(255,255,255,0.02); border:1px solid var(--line-soft); font-size:12px; }
+.dial-legend-row .lg-name{ display:flex; align-items:center; gap:9px; color:var(--text); font-weight:600; }
+.dial-legend-row .lg-dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.dial-legend-row .lg-meta{ font-family:var(--font-mono); font-size:10.5px; color:var(--muted-2); text-align:right; }
 
 .ticker-strip{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:rgba(0,0,0,0.35); backdrop-filter:blur(8px); overflow:hidden; }
 .ticker-track{ display:flex; gap:56px; padding:14px 0; white-space:nowrap; animation:tickerScroll 30s linear infinite; width:max-content; }
@@ -106,49 +144,30 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .section-head p{ margin-top:16px; color:var(--muted); font-size:15px; line-height:1.65; }
 
 .gallery-grid{ margin-top:40px; display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
-@media (min-width:640px){ .gallery-grid{ grid-template-columns:repeat(3,1fr); } }
-@media (min-width:960px){ .gallery-grid{ grid-template-columns:repeat(5,1fr); } }
-.gallery-item{ position:relative; border-radius:14px; overflow:hidden; height:170px; border:1px solid var(--line); }
+@media (min-width:640px){ .gallery-grid{ grid-template-columns:repeat(4,1fr); } }
+.gallery-item{ position:relative; border-radius:14px; overflow:hidden; height:200px; border:1px solid var(--line); }
 .gallery-item img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.22,1,.36,1); }
 .gallery-item:hover img{ transform:scale(1.08); }
-.gallery-cap{ position:absolute; left:0; right:0; bottom:0; padding:8px 10px 7px; background:linear-gradient(180deg, rgba(10,10,11,0) 0%, rgba(10,10,11,0.9) 100%); font-family:var(--font-mono); font-size:10px; letter-spacing:.02em; color:var(--text); }
+.gallery-cap{ position:absolute; left:0; right:0; bottom:0; padding:10px 12px 9px; background:linear-gradient(180deg, rgba(10,10,11,0) 0%, rgba(10,10,11,0.9) 100%); font-family:var(--font-mono); font-size:10.5px; letter-spacing:.02em; color:var(--text); }
 
-.cap-grid{ margin-top:40px; display:grid; grid-template-columns:1fr; gap:20px; }
-@media (min-width:700px){ .cap-grid{ grid-template-columns:repeat(2,1fr); } }
-.cap-card{ border-radius:16px; overflow:hidden; transition:transform .4s cubic-bezier(.22,1,.36,1), border-color .4s; }
-.cap-card:hover{ transform:translateY(-6px); }
-.cap-img{ height:190px; overflow:hidden; }
-.cap-img img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.22,1,.36,1); }
-.cap-card:hover .cap-img img{ transform:scale(1.06); }
-.cap-body{ padding:20px 22px 24px; }
-.cap-body h3{ font-size:18px; display:flex; align-items:center; gap:10px; }
-.cap-body p{ margin-top:10px; color:var(--muted); font-size:13.5px; line-height:1.6; }
-.cap-icon{ width:32px; height:32px; border-radius:9px; background:rgba(255,90,31,0.12); display:flex; align-items:center; justify-content:center; color:var(--hot); flex-shrink:0; }
-
-.process-list{ margin-top:40px; display:grid; grid-template-columns:1fr; gap:0; }
-.process-item{ display:grid; grid-template-columns:64px 1fr; gap:20px; padding:24px 0; border-top:1px solid var(--line); }
-.process-item:last-child{ border-bottom:1px solid var(--line); }
-.process-num{ font-family:var(--font-mono); font-size:13px; color:var(--hot); font-weight:600; padding-top:2px; }
-.process-content h3{ font-size:18px; }
-.process-content p{ margin-top:8px; color:var(--muted); font-size:13.5px; line-height:1.6; max-width:560px; }
-@media (min-width:760px){ .process-item{ grid-template-columns:64px 1fr 200px; align-items:center; } .process-tag{ font-family:var(--font-mono); font-size:11px; color:var(--muted-2); text-align:right; } }
-
-.fac-grid{ margin-top:40px; display:grid; grid-template-columns:1fr; gap:20px; }
-@media (min-width:700px){ .fac-grid{ grid-template-columns:repeat(3,1fr); } }
-.fac-card{ border-radius:16px; overflow:hidden; transition:transform .4s cubic-bezier(.22,1,.36,1); }
-.fac-card:hover{ transform:translateY(-6px); }
-.fac-img{ height:170px; overflow:hidden; position:relative; }
-.fac-img img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.22,1,.36,1); }
-.fac-card:hover .fac-img img{ transform:scale(1.06); }
-.fac-badge{ position:absolute; top:12px; left:12px; font-family:var(--font-mono); font-size:10px; letter-spacing:0.06em; text-transform:uppercase; padding:4px 10px; border-radius:100px; background:rgba(10,10,11,0.7); backdrop-filter:blur(6px); border:1px solid var(--line); color:var(--ok); display:flex; align-items:center; gap:6px; }
-.fac-badge .p{ width:6px; height:6px; border-radius:50%; background:var(--ok); box-shadow:0 0 6px var(--ok); }
-.fac-body{ padding:18px 20px 22px; }
-.fac-body h3{ font-size:16px; }
-.fac-body .fac-loc{ margin-top:4px; font-family:var(--font-mono); font-size:11px; color:var(--muted-2); letter-spacing:0.03em; }
-.fac-body p{ margin-top:10px; color:var(--muted); font-size:13px; line-height:1.6; }
-.fac-stats{ margin-top:14px; display:flex; gap:18px; border-top:1px solid var(--line); padding-top:14px; }
-.fac-stats div b{ display:block; font-family:var(--font-display); font-size:16px; color:var(--text); }
-.fac-stats div span{ font-family:var(--font-mono); font-size:10px; color:var(--muted-2); letter-spacing:0.03em; }
+/* ============ NEW SECTION — Regional Support Hubs ============ */
+.hubs{ padding:64px 0; border-top:1px solid var(--line); }
+.hub-grid{ margin-top:40px; display:grid; grid-template-columns:1fr; gap:20px; }
+@media (min-width:760px){ .hub-grid{ grid-template-columns:repeat(3,1fr); } }
+.hub-card{ border-radius:16px; overflow:hidden; transition:transform .4s cubic-bezier(.22,1,.36,1); }
+.hub-card:hover{ transform:translateY(-6px); }
+.hub-img{ height:170px; overflow:hidden; position:relative; }
+.hub-img img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.22,1,.36,1); }
+.hub-card:hover .hub-img img{ transform:scale(1.06); }
+.hub-badge{ position:absolute; top:12px; left:12px; font-family:var(--font-mono); font-size:10px; letter-spacing:0.06em; text-transform:uppercase; padding:4px 10px; border-radius:100px; background:rgba(10,10,11,0.72); backdrop-filter:blur(6px); border:1px solid var(--line); color:var(--hot); display:flex; align-items:center; gap:6px; }
+.hub-badge .p{ width:6px; height:6px; border-radius:50%; background:var(--hot); box-shadow:0 0 6px var(--hot); }
+.hub-body{ padding:18px 20px 22px; }
+.hub-body h3{ font-size:16.5px; }
+.hub-body .hub-loc{ margin-top:4px; font-family:var(--font-mono); font-size:11px; color:var(--muted-2); letter-spacing:0.03em; }
+.hub-body p{ margin-top:10px; color:var(--muted); font-size:13px; line-height:1.6; }
+.hub-stats{ margin-top:14px; display:flex; gap:18px; border-top:1px solid var(--line); padding-top:14px; }
+.hub-stats div b{ display:block; font-family:var(--font-display); font-size:16px; color:var(--text); }
+.hub-stats div span{ font-family:var(--font-mono); font-size:10px; color:var(--muted-2); letter-spacing:0.03em; }
 
 .testimonials{ padding:64px 0; border-top:1px solid var(--line); }
 .t-grid{ margin-top:36px; display:grid; grid-template-columns:1fr; gap:20px; }
@@ -289,25 +308,60 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
   </div>
 </header>
 
-<section class="hero">
-  <div class="wrap hero-grid">
+<!-- ============ HERO — distinct from index.html: no photo, animated SLA command dial ============ -->
+<section class="hero-sla" id="top-hero">
+  <div class="hero-sla-bg">
+    <div class="diamond-grid"></div>
+    <div class="ping-ring"></div>
+    <div class="ping-ring r2"></div>
+    <div class="ping-ring r3"></div>
+    <div class="scan-line"></div>
+  </div>
+  <div class="wrap hero-sla-grid">
     <div>
-      <div class="eyebrow reveal in"><span class="dot"></span> SERVICE PLANS <span class="tag">3 tiers</span></div>
-      <h1 class="reveal in" style="transition-delay:.1s">Partnership tiers<br><span class="hot-gradient">for every scale.</span></h1>
-      <p class="lede reveal in" style="transition-delay:.25s">Maintenance, tooling support, and priority production slots — matched to how hard you run your lines, from a single cell to a plant-wide program.</p>
-      <div class="hero-cta reveal in" style="transition-delay:.4s">
-        <a href="contact.html" class="btn btn-hot">Talk to Sales
+      <div class="eyebrow reveal in"><span class="dot"></span> SERVICE PLANS <span class="tag">SLA-backed</span></div>
+      <h1 class="reveal in" style="transition-delay:.1s">Response,<br><span class="hot-gradient">measured in hours.</span></h1>
+      <p class="lede reveal in" style="transition-delay:.25s">Every tier is built around one number: how fast an engineer reaches your line. Maintenance, tooling support, and priority production slots follow from there.</p>
+      <div class="hero-sla-cta reveal in" style="transition-delay:.4s">
+        <a href="#" class="btn btn-hot" onclick="navigateTo404(event)">Talk to Sales
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
         </a>
-        <a href="#plans" class="btn btn-ghost">Compare Plans</a>
+        <a href="#" class="btn btn-ghost" onclick="navigateTo404(event)">Compare Plans</a>
       </div>
-      <div class="hero-sub reveal in" style="transition-delay:.55s">4-HOUR PRIORITY RESPONSE &nbsp;·&nbsp; LIVE OEE DASHBOARD &nbsp;·&nbsp; SAVE 15% ANNUAL</div>
+      <div class="hero-sla-sub reveal in" style="transition-delay:.55s">24/7 MONITORING &nbsp;·&nbsp; SLA-BACKED RESPONSE &nbsp;·&nbsp; DEDICATED ENGINEERS</div>
     </div>
-    <div class="hero-visual reveal in" style="transition-delay:.3s">
-      <img src="https://images.unsplash.com/photo-1565087921904-11a0806a5309?auto=format&fit=crop&w=800&q=80" alt="Heavy forming and press plant">
+
+    <div class="dial-stage reveal in" style="transition-delay:.3s">
+      <div class="dial-ambient"></div>
+      <div class="dial-ambient two"></div>
+      <div class="dial-card glass">
+        <div class="dial-svg-wrap">
+          <svg viewBox="0 0 240 240" id="slaDial">
+            <circle class="dial-track" cx="120" cy="120" r="100"></circle>
+            <circle class="dial-track" cx="120" cy="120" r="78"></circle>
+            <circle class="dial-track" cx="120" cy="120" r="56"></circle>
+            <circle id="arcStandard" class="dial-arc" cx="120" cy="120" r="100" stroke="#9AA5B1" transform="rotate(-90 120 120)"></circle>
+            <circle id="arcPro" class="dial-arc" cx="120" cy="120" r="78" stroke="#FF5A1F" transform="rotate(-90 120 120)"></circle>
+            <circle id="arcEnterprise" class="dial-arc" cx="120" cy="120" r="56" stroke="#3ddc84" transform="rotate(-90 120 120)"></circle>
+            <g class="dial-hand">
+              <line x1="120" y1="120" x2="120" y2="30" stroke="rgba(255,90,31,0.55)" stroke-width="2" stroke-linecap="round"></line>
+              <circle cx="120" cy="120" r="4" fill="#FF5A1F"></circle>
+            </g>
+            
+            <text x="120" y="140" text-anchor="middle" class="dial-center-value" id="dialCenterValue">0%</text>
+            
+          </svg>
+        </div>
+        <div class="dial-legend">
+          <div class="dial-legend-row"><span class="lg-name"><span class="lg-dot" style="background:#9AA5B1"></span>Standard</span><span class="lg-meta">48H · 98.5%</span></div>
+          <div class="dial-legend-row"><span class="lg-name"><span class="lg-dot" style="background:#FF5A1F"></span>Pro</span><span class="lg-meta">4H · 99.6%</span></div>
+          <div class="dial-legend-row"><span class="lg-name"><span class="lg-dot" style="background:#3ddc84"></span>Enterprise</span><span class="lg-meta">1H · 99.9%</span></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
 <section class="ticker-strip">
   <div class="ticker-track">
     <div class="ticker-item"><b>3 TIERS</b><span class="sep">/</span>Standard, Pro, Enterprise</div>
@@ -318,9 +372,9 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
     <div class="ticker-item"><b>4-HOUR</b><span class="sep">/</span>Pro Tier Response Time</div>
     <div class="ticker-item"><b>SAVE 15%</b><span class="sep">/</span>On Annual Billing</div>
     <div class="ticker-item"><b>LIVE DASHBOARD</b><span class="sep">/</span>OEE Access On Pro & Enterprise</div>
-    
   </div>
 </section>
+
 <section class="section-pad">
   <div class="wrap">
     <div class="section-head reveal">
@@ -329,19 +383,72 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
       <p>A look at the maintenance, tooling, and inspection work covered across our service plans.</p>
     </div>
     <div class="gallery-grid reveal-stagger">
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1515630771457-09367d0ae038?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Preventive maintenance"><div class="gallery-cap">Preventive maintenance</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1567177173026-402dd75a5ab7?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Spare parts stock"><div class="gallery-cap">Spare parts stock</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1717386255773-1e3037c81788?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Remote diagnostics"><div class="gallery-cap">Remote diagnostics</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1627807452502-0c8329fc710b?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="On-site service call"><div class="gallery-cap">On-site service call</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1513828646384-e4d8ec30d2bb?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Tooling changeover"><div class="gallery-cap">Tooling changeover</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Calibration check"><div class="gallery-cap">Calibration check</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1580901369227-308f6f40bdeb?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Fixture rebuild"><div class="gallery-cap">Fixture rebuild</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1606337321936-02d1b1a4d5ef?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Emergency response"><div class="gallery-cap">Emergency response</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Dashboard monitoring"><div class="gallery-cap">Dashboard monitoring</div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Engineer walkthrough"><div class="gallery-cap">Engineer walkthrough</div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1666618090858-fbcee636bd3e?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="On-site diagnostics on a CNC lathe"><div class="gallery-cap">On-site diagnostics</div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1716191299980-a6e8827ba10b?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Robotic cell service and calibration"><div class="gallery-cap">Robotic cell service</div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1567177173026-402dd75a5ab7?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Precision parts inspection"><div class="gallery-cap">Precision parts inspection</div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1647427060118-4911c9821b82?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Plant-wide coverage across the floor"><div class="gallery-cap">Plant-wide coverage</div></div>
     </div>
   </div>
 </section>
+
+<!-- ============ NEW SECTION — Regional Support Hubs ============ -->
+<section class="hubs" id="hubs">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> COVERAGE <span class="tag">Where engineers are staged</span></div>
+      <h2>Regional hubs,<br>staged near your lines.</h2>
+      <p>Service plans are only as good as the engineer who can reach you. Here's where ours are staged and what that means for your response clock.</p>
+    </div>
+    <div class="hub-grid reveal-stagger">
+      <div class="hub-card glass">
+        <div class="hub-img">
+          <img src="https://images.unsplash.com/photo-1580901369227-308f6f40bdeb?auto=format&fit=crop&w=800&q=80" alt="Field service dispatch vehicle and equipment">
+          <div class="hub-badge"><span class="p"></span>Field Dispatch</div>
+        </div>
+        <div class="hub-body">
+          <h3>Mobile Field Units</h3>
+          <div class="hub-loc">ON-CALL · MULTI-REGION</div>
+          <p>Fully equipped service vehicles stocked with common spares, dispatched directly from the nearest hub.</p>
+          <div class="hub-stats">
+            <div><b>18</b><span>ACTIVE UNITS</span></div>
+            <div><b>92%</b><span>FIRST-VISIT FIX</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="hub-card glass">
+        <div class="hub-img">
+          <img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=800&q=80" alt="Chennai support hub interior">
+          <div class="hub-badge"><span class="p"></span>Hub Online</div>
+        </div>
+        <div class="hub-body">
+          <h3>Hub 01 — Chennai</h3>
+          <div class="hub-loc">SOUTH REGION · TAMIL NADU, IN</div>
+          <p>Primary parts depot and engineering desk, anchoring 1-hour Enterprise response across the south region.</p>
+          <div class="hub-stats">
+            <div><b>1H</b><span>AVG DISPATCH</span></div>
+            <div><b>24/7</b><span>DESK COVERAGE</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="hub-card glass">
+        <div class="hub-img">
+          <img src="https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=800&q=80" alt="Pune support hub interior">
+          <div class="hub-badge"><span class="p"></span>Hub Online</div>
+        </div>
+        <div class="hub-body">
+          <h3>Hub 02 — Pune</h3>
+          <div class="hub-loc">WEST REGION · MAHARASHTRA, IN</div>
+          <p>Automation-focused desk pairing robotic cell specialists with Pro and Enterprise accounts nearby.</p>
+          <div class="hub-stats">
+            <div><b>4H</b><span>AVG DISPATCH</span></div>
+            <div><b>340+</b><span>ACCOUNTS SERVED</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="pricing" id="plans">
   <div class="wrap">
     <div class="section-head reveal" style="margin:0 auto; text-align:center; max-width:560px;">
@@ -366,7 +473,7 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
           <li><span class="check-circle"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Spare parts at standard rates</li>
           <li><span class="check-circle"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Remote diagnostics portal</li>
         </ul>
-        <button class="price-btn">Choose Standard</button>
+        <button class="price-btn" onclick="navigateTo404(event)">Choose Standard</button>
       </div>
       <div class="price-card featured">
         <div class="price-tier">Pro Partnership</div>
@@ -379,7 +486,7 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
           <li><span class="check-circle"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Live OEE dashboard access</li>
           <li><span class="check-circle"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Dedicated process engineer</li>
         </ul>
-        <button class="price-btn">Choose Pro</button>
+        <button class="price-btn" onclick="navigateTo404(event)">Choose Pro</button>
       </div>
       <div class="price-card">
         <div class="price-tier">Enterprise</div>
@@ -391,11 +498,12 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
           <li><span class="check-circle"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Custom tooling &amp; fixtures</li>
           <li><span class="check-circle"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>Multi-facility SLA reporting</li>
         </ul>
-        <button class="price-btn">Talk to Sales</button>
+        <button class="price-btn" onclick="navigateTo404(event)">Talk to Sales</button>
       </div>
     </div>
   </div>
 </section>
+
 <section class="testimonials">
   <div class="wrap">
     <div class="section-head reveal">
@@ -427,6 +535,7 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
     </div>
   </div>
 </section>
+
 <section class="faq">
   <div class="wrap">
     <div class="section-head reveal">
@@ -453,6 +562,7 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
     </div>
   </div>
 </section>
+
 <section class="final-cta" id="contact-cta">
   <div class="wrap">
     <div class="cta-box glass reveal">
@@ -460,11 +570,11 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
       <h2>Not sure which<br>tier fits?</h2>
       <p>Tell us your line count and shift pattern, and we'll recommend a plan.</p>
       <div class="cta-buttons">
-        <a href="contact.html" class="btn btn-hot">
+        <a href="#" class="btn btn-hot" onclick="navigateTo404(event)">
           Talk to Sales
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
         </a>
-        <a href="index.html" class="btn btn-ghost">Back to Home</a>
+        <a href="#" class="btn btn-ghost" onclick="navigateTo404(event)">Back to Home</a>
       </div>
     </div>
   </div>
@@ -520,6 +630,12 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
 </footer>
 
 <script>
+  // Function to navigate to 404.html for all buttons
+  function navigateTo404(event) {
+    event.preventDefault();
+    window.location.href = '404.html';
+  }
+
   const menuBtn = document.getElementById('menuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
   menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
@@ -531,6 +647,42 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
     });
   }, { threshold: 0.12 });
   revealEls.forEach(el => io.observe(el));
+
+  /* SLA dial — draw-in arcs + counting center value, triggered once on view */
+  function setArc(id, radius, pct){
+    const el = document.getElementById(id);
+    const c = 2 * Math.PI * radius;
+    el.style.strokeDasharray = c;
+    el.style.strokeDashoffset = c; // start empty
+    requestAnimationFrame(() => {
+      el.style.strokeDashoffset = c * (1 - pct / 100);
+    });
+  }
+  function animateDialValue(target){
+    const el = document.getElementById('dialCenterValue');
+    let cur = 0;
+    const steps = 42;
+    const inc = target / steps;
+    let i = 0;
+    const t = setInterval(() => {
+      i++; cur += inc;
+      if(i >= steps){ cur = target; clearInterval(t); }
+      el.textContent = cur.toFixed(1) + '%';
+    }, 26);
+  }
+  const dialObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        setArc('arcStandard', 100, 98.5);
+        setArc('arcPro', 78, 99.6);
+        setArc('arcEnterprise', 56, 99.9);
+        animateDialValue(99.4);
+        dialObs.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  const dialStage = document.querySelector('.dial-stage');
+  if (dialStage) dialObs.observe(dialStage);
 
   const priceToggle = document.getElementById('priceToggle');
   if (priceToggle) {
