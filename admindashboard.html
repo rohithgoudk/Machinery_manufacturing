@@ -575,24 +575,24 @@
     { name: "Gujarat Plant Gateway", status: "down", uptime: "91.20%", latency: "—" }
   ];
   const liveFeed = [
-    { icon: "🆕", text: "New user invited: Nikhil Sinha (Account Manager)", time: "12m ago", type: "user" },
-    { icon: "🔧", text: "Gujarat plant gateway flagged degraded — ops notified", time: "38m ago", type: "alert" },
-    { icon: "🧾", text: "Invoice INV-2025-011 marked overdue", time: "1h ago", type: "billing" },
-    { icon: "🔐", text: "Facility Admin role permissions updated by Dev Anand", time: "2h ago", type: "security" },
-    { icon: "🚫", text: "Account suspended after repeated failed logins", time: "3h ago", type: "security" },
-    { icon: "✅", text: "Nightly backup completed across all facilities", time: "6h ago", type: "system" },
-    { icon: "🎫", text: "3 new support tickets opened overnight", time: "8h ago", type: "ticket" }
+    { icon: "", text: "New user invited: Nikhil Sinha (Account Manager)", time: "12m ago", type: "user" },
+    { icon: "", text: "Gujarat plant gateway flagged degraded — ops notified", time: "38m ago", type: "alert" },
+    { icon: "", text: "Invoice INV-2025-011 marked overdue", time: "1h ago", type: "billing" },
+    { icon: "", text: "Facility Admin role permissions updated by Dev Anand", time: "2h ago", type: "security" },
+    { icon: "", text: "Account suspended after repeated failed logins", time: "3h ago", type: "security" },
+    { icon: "", text: "Nightly backup completed across all facilities", time: "6h ago", type: "system" },
+    { icon: "", text: "3 new support tickets opened overnight", time: "8h ago", type: "ticket" }
   ];
   const navItems = [
-    { icon: "▦", label: "Dashboard", id: "dashboard" },
-    { icon: "👥", label: "Users", id: "users" },
-    { icon: "🏭", label: "Facilities", id: "facilities" },
-    { icon: "🔐", label: "Roles & Access", id: "roles" },
-    { icon: "🎫", label: "Support Tickets", id: "tickets" },
-    { icon: "🧾", label: "Billing", id: "billing" },
-    { icon: "📜", label: "Audit Log", id: "audit" },
-    { icon: "🛠", label: "System Health", id: "system" },
-    { icon: "⚙️", label: "Settings", id: "settings" }
+    { icon: "", label: "Dashboard", id: "dashboard" },
+    { icon: "", label: "Users", id: "users" },
+    { icon: "", label: "Facilities", id: "facilities" },
+    { icon: "", label: "Roles & Access", id: "roles" },
+    { icon: "", label: "Support Tickets", id: "tickets" },
+    { icon: "", label: "Billing", id: "billing" },
+    { icon: "", label: "Audit Log", id: "audit" },
+    { icon: "", label: "System Health", id: "system" },
+    { icon: "", label: "Settings", id: "settings" }
   ];
   const statusColors = { "Active": "status-active", "Online": "status-active", "Invited": "status-field", "Maintenance": "status-field", "Completed": "status-complete", "Resolved": "status-complete", "Review": "status-review", "In Progress": "status-review", "Open": "status-field", "Suspended": "status-danger", "Offline": "status-danger", "Overdue": "status-danger", "Paid": "status-active" };
   const priorityColor = { "Low": "#9AA5B1", "Medium": "#FFB800", "High": "#FF9B5A", "Urgent": "#FF4D4D" };
@@ -680,10 +680,10 @@
 
   function renderDashboard() {
     const stats = [
-      { icon: "👥", delta: "+2 this month", value: adminUsers.length, label: "Total Users", bar: 78, accent: true },
-      { icon: "🏭", delta: "5 of 6 online", value: "6", label: "Facilities", bar: 84 },
-      { icon: "🎫", delta: "2 urgent", value: ticketsData.filter(t => t.status !== "Resolved").length, label: "Open Tickets", bar: 46 },
-      { icon: "🛠", delta: "1 degraded", value: "99.1%", label: "Platform Uptime", bar: 99 }
+      { icon: "", delta: "+2 this month", value: adminUsers.length, label: "Total Users", bar: 78, accent: true },
+      { icon: "", delta: "5 of 6 online", value: "6", label: "Facilities", bar: 84 },
+      { icon: "", delta: "2 urgent", value: ticketsData.filter(t => t.status !== "Resolved").length, label: "Open Tickets", bar: 46 },
+      { icon: "", delta: "1 degraded", value: "99.1%", label: "Platform Uptime", bar: 99 }
     ];
     const statsHtml = stats.map(s =>
       `<div class="stat-card ${s.accent ? "stat-accent" : ""}" onclick="go404()">
@@ -789,10 +789,10 @@
     let filtered = state.userFilter === "All" ? adminUsers : adminUsers.filter(u => u.status === state.userFilter);
     if (q) filtered = filtered.filter(u => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q) || u.facility.toLowerCase().includes(q));
     const stats = [
-      { icon: "👥", value: adminUsers.length, label: "Total Users", accent: true },
-      { icon: "🟢", value: adminUsers.filter(u => u.status === "Active").length, label: "Active" },
-      { icon: "✉️", value: adminUsers.filter(u => u.status === "Invited").length, label: "Pending Invites" },
-      { icon: "🚫", value: adminUsers.filter(u => u.status === "Suspended").length, label: "Suspended" }
+      { icon: "", value: adminUsers.length, label: "Total Users", accent: true },
+      { icon: "", value: adminUsers.filter(u => u.status === "Active").length, label: "Active" },
+      { icon: "", value: adminUsers.filter(u => u.status === "Invited").length, label: "Pending Invites" },
+      { icon: "", value: adminUsers.filter(u => u.status === "Suspended").length, label: "Suspended" }
     ];
     const statsHtml = stats.map((s,i) => {
       const bar = [100, 80, 25, 10][i];
@@ -837,10 +837,10 @@
 
   function renderFacilities() {
     const stats = [
-      { icon: "🏭", value: facilitiesData.length, label: "Total Facilities", accent: true },
-      { icon: "🟢", value: facilitiesData.filter(f => f.status === "Online").length, label: "Online" },
-      { icon: "🟡", value: facilitiesData.filter(f => f.status === "Maintenance").length, label: "Maintenance" },
-      { icon: "🔴", value: facilitiesData.filter(f => f.status === "Offline").length, label: "Offline" }
+      { icon: "", value: facilitiesData.length, label: "Total Facilities", accent: true },
+      { icon: "", value: facilitiesData.filter(f => f.status === "Online").length, label: "Online" },
+      { icon: "", value: facilitiesData.filter(f => f.status === "Maintenance").length, label: "Maintenance" },
+      { icon: "", value: facilitiesData.filter(f => f.status === "Offline").length, label: "Offline" }
     ];
     const statsHtml = stats.map((s,i) => {
       const bar = [100, 83, 17, 17][i];
@@ -858,9 +858,9 @@
           <span class="status-badge ${statusColors[f.status]}">${f.status}</span>
         </div>
         <div style="font-size:12.5px;color:var(--text-dim);line-height:1.9">
-          <div>📍 ${f.facility}</div>
-          <div>👷 Manager: ${f.manager}</div>
-          <div>🔩 ${f.lines} active lines · ${f.floor}</div>
+          <div> ${f.facility}</div>
+          <div> Manager: ${f.manager}</div>
+          <div> ${f.lines} active lines · ${f.floor}</div>
         </div>
         <div style="margin-top:14px">
           <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--text-dim);margin-bottom:6px"><span>Uptime</span><span>${f.uptime}%</span></div>
@@ -881,10 +881,10 @@
 
   function renderRoles() {
     const stats = [
-      { icon: "🔐", value: rolesData.length, label: "Role Types", accent: true },
-      { icon: "👥", value: rolesData.reduce((a,r)=>a+r.users,0), label: "Assigned Users" },
-      { icon: "🧩", value: Math.max(...rolesData.map(r=>r.permissions)), label: "Max Permissions" },
-      { icon: "🛡", value: "1", label: "Super Admins" }
+      { icon: "", value: rolesData.length, label: "Role Types", accent: true },
+      { icon: "", value: rolesData.reduce((a,r)=>a+r.users,0), label: "Assigned Users" },
+      { icon: "", value: Math.max(...rolesData.map(r=>r.permissions)), label: "Max Permissions" },
+      { icon: "", value: "1", label: "Super Admins" }
     ];
     const statsHtml = stats.map((s,i) => {
       const bar = [100, 90, 70, 15][i];
@@ -922,10 +922,10 @@
     const filters = ["All", "Open", "In Progress", "Resolved"];
     const filtered = state.ticketFilter === "All" ? ticketsData : ticketsData.filter(t => t.status === state.ticketFilter);
     const stats = [
-      { icon: "🎫", value: ticketsData.length, label: "Total Tickets", accent: true },
-      { icon: "🟠", value: ticketsData.filter(t=>t.status==="Open").length, label: "Open" },
-      { icon: "🔵", value: ticketsData.filter(t=>t.status==="In Progress").length, label: "In Progress" },
-      { icon: "✅", value: ticketsData.filter(t=>t.status==="Resolved").length, label: "Resolved" }
+      { icon: "", value: ticketsData.length, label: "Total Tickets", accent: true },
+      { icon: "", value: ticketsData.filter(t=>t.status==="Open").length, label: "Open" },
+      { icon: "", value: ticketsData.filter(t=>t.status==="In Progress").length, label: "In Progress" },
+      { icon: "", value: ticketsData.filter(t=>t.status==="Resolved").length, label: "Resolved" }
     ];
     const statsHtml = stats.map((s,i) => {
       const bar = [100, 50, 33, 33][i];
@@ -963,10 +963,10 @@
 
   function renderBilling() {
     const stats = [
-      { icon: "🧾", value: "Enterprise", label: "Current Plan", accent: true },
-      { icon: "💳", value: "$18,400", label: "This Month" },
-      { icon: "📆", value: "Aug 1", label: "Next Renewal" },
-      { icon: "⚠️", value: invoicesData.filter(i=>i.status==="Overdue").length, label: "Overdue Invoices" }
+      { icon: "", value: "Enterprise", label: "Current Plan", accent: true },
+      { icon: "", value: "$18,400", label: "This Month" },
+      { icon: "", value: "Aug 1", label: "Next Renewal" },
+      { icon: "", value: invoicesData.filter(i=>i.status==="Overdue").length, label: "Overdue Invoices" }
     ];
     const statsHtml = stats.map((s,i) => {
       const bar = [100, 90, 60, 20][i];
@@ -1026,10 +1026,10 @@
   function renderSystem() {
     const okCount = systemServices.filter(s=>s.status==="ok").length;
     const stats = [
-      { icon: "🛠", value: systemServices.length, label: "Services Monitored", accent: true },
-      { icon: "🟢", value: okCount, label: "Operational" },
-      { icon: "🟡", value: systemServices.filter(s=>s.status==="warn").length, label: "Degraded" },
-      { icon: "🔴", value: systemServices.filter(s=>s.status==="down").length, label: "Down" }
+      { icon: "", value: systemServices.length, label: "Services Monitored", accent: true },
+      { icon: "", value: okCount, label: "Operational" },
+      { icon: "", value: systemServices.filter(s=>s.status==="warn").length, label: "Degraded" },
+      { icon: "", value: systemServices.filter(s=>s.status==="down").length, label: "Down" }
     ];
     const statsHtml = stats.map((s,i) => {
       const bar = [100, Math.round(okCount/systemServices.length*100), 20, 20][i];

@@ -580,24 +580,24 @@
     { title: "Compliance & Certification Guide (ISO 9001 / AS9100)", type: "Compliance Guide", year: 2023, pages: 180, downloads: 1920 }
   ];
   const liveFeed = [
-    { icon: "🏆", text: "Pune's robotic weld line hit record uptime this week", time: "2h ago", type: "milestone" },
-    { icon: "📈", text: "Record reorder week reported across the Chennai facility", time: "4h ago", type: "performance" },
-    { icon: "✅", text: "Northfield valve body reorder completed — final QA report published", time: "Yesterday", type: "complete" },
-    { icon: "⚠️", text: "Weather delay at Gujarat plant — outbound freight paused", time: "Yesterday", type: "alert" },
-    { icon: "🔬", text: "Drop-test data reveals new fixture opportunity across the Hyderabad line", time: "2d ago", type: "update" },
-    { icon: "🎯", text: "Q3 reorder targets exceeded across three facilities", time: "3d ago", type: "milestone" },
-    { icon: "📦", text: "New CMM inspection protocol launched across the Bengaluru line", time: "4d ago", type: "update" }
+    { icon: "", text: "Pune's robotic weld line hit record uptime this week", time: "2h ago", type: "milestone" },
+    { icon: "", text: "Record reorder week reported across the Chennai facility", time: "4h ago", type: "performance" },
+    { icon: "", text: "Northfield valve body reorder completed — final QA report published", time: "Yesterday", type: "complete" },
+    { icon: "", text: "Weather delay at Gujarat plant — outbound freight paused", time: "Yesterday", type: "alert" },
+    { icon: "", text: "Drop-test data reveals new fixture opportunity across the Hyderabad line", time: "2d ago", type: "update" },
+    { icon: "", text: "Q3 reorder targets exceeded across three facilities", time: "3d ago", type: "milestone" },
+    { icon: "", text: "New CMM inspection protocol launched across the Bengaluru line", time: "4d ago", type: "update" }
   ];
   const navItems = [
-    { icon: "▦", label: "Dashboard", id: "dashboard" },
-    { icon: "🏭", label: "Production Runs", id: "runs" },
-    { icon: "👷", label: "Plant Team", id: "teams" },
-    { icon: "🔩", label: "Parts Catalog", id: "products" },
-    { icon: "📊", label: "Quality Reports", id: "reports" },
-    { icon: "🗓️", label: "Schedule", id: "schedule" },
-    { icon: "💰", label: "Budget", id: "budget" },
-    { icon: "📚", label: "Resource Library", id: "training" },
-    { icon: "⚙️", label: "Settings", id: "settings" }
+    { icon: "", label: "Dashboard", id: "dashboard" },
+    { icon: "", label: "Production Runs", id: "runs" },
+    { icon: "", label: "Plant Team", id: "teams" },
+    { icon: "", label: "Parts Catalog", id: "products" },
+    { icon: "", label: "Quality Reports", id: "reports" },
+    { icon: "", label: "Schedule", id: "schedule" },
+    { icon: "", label: "Budget", id: "budget" },
+    { icon: "", label: "Resource Library", id: "training" },
+    { icon: "", label: "Settings", id: "settings" }
   ];
   const statusColors = { "Active": "status-active", "Ramping Up": "status-field", "Completed": "status-complete", "Review": "status-review" };
   const stockColor = { "Excellent": "#3ddc84", "Good": "#FFB800", "Low Stock": "#FF4D4D" };
@@ -695,10 +695,10 @@
 
   function renderDashboard() {
     const stats = [
-      { icon: "🏭", delta: "+3 this month", value: "12", label: "Active Production Runs", bar: 72, accent: true },
-      { icon: "🔩", delta: "+42 this week", value: "2,847", label: "Parts Catalogued", bar: 64 },
-      { icon: "💰", delta: "On track", value: "$8.4M", label: "Machining Budget", bar: 88 },
-      { icon: "🏗", delta: "+2 this quarter", value: "6", label: "Active Facilities", bar: 90 }
+      { icon: "", delta: "+3 this month", value: "12", label: "Active Production Runs", bar: 72, accent: true },
+      { icon: "", delta: "+42 this week", value: "2,847", label: "Parts Catalogued", bar: 64 },
+      { icon: "", delta: "On track", value: "$8.4M", label: "Machining Budget", bar: 88 },
+      { icon: "", delta: "+2 this quarter", value: "6", label: "Active Facilities", bar: 90 }
     ];
     const statsHtml = stats.map(s =>
       `<div class="stat-card ${s.accent ? "stat-accent" : ""}" onclick="go404()">
@@ -816,10 +816,10 @@
     const statuses = ["All", "Active", "Ramping Up", "Review", "Completed"];
     const filtered = state.runFilter === "All" ? productionRuns : productionRuns.filter(e => e.status === state.runFilter);
     const stats = [
-      { icon: "🏭", value: productionRuns.length, label: "Total Runs Launched" },
-      { icon: "🟢", value: productionRuns.filter(e => e.status === "Active").length, label: "Active Now", accent: true },
-      { icon: "📍", value: productionRuns.filter(e => e.status === "Ramping Up").length, label: "Ramping Up" },
-      { icon: "✅", value: productionRuns.filter(e => e.status === "Completed").length, label: "Completed" }
+      { icon: "", value: productionRuns.length, label: "Total Runs Launched" },
+      { icon: "", value: productionRuns.filter(e => e.status === "Active").length, label: "Active Now", accent: true },
+      { icon: "", value: productionRuns.filter(e => e.status === "Ramping Up").length, label: "Ramping Up" },
+      { icon: "", value: productionRuns.filter(e => e.status === "Completed").length, label: "Completed" }
     ];
     const statsHtml = stats.map((s, i) => {
       const bar = [100, 60, 40, 20][i];
@@ -859,10 +859,10 @@
 
   function renderTeams() {
     const stats = [
-      { icon: "👷", value: accountTeam.length, label: "Team Members", bar: 80 },
-      { icon: "🟢", value: accountTeam.filter(m => m.status === "active").length, label: "Online Now", bar: 85, accent: true },
-      { icon: "📋", value: accountTeam.reduce((a, m) => a + m.projects, 0), label: "Active Accounts", bar: 70 },
-      { icon: "🏅", value: Math.round(accountTeam.reduce((a, m) => a + m.experience, 0) / accountTeam.length), label: "Avg. Yrs w/ TORQUE", bar: 75 }
+      { icon: "", value: accountTeam.length, label: "Team Members", bar: 80 },
+      { icon: "", value: accountTeam.filter(m => m.status === "active").length, label: "Online Now", bar: 85, accent: true },
+      { icon: "", value: accountTeam.reduce((a, m) => a + m.projects, 0), label: "Active Accounts", bar: 70 },
+      { icon: "", value: Math.round(accountTeam.reduce((a, m) => a + m.experience, 0) / accountTeam.length), label: "Avg. Yrs w/ TORQUE", bar: 75 }
     ];
     const statsHtml = stats.map(s =>
       `<div class="stat-card ${s.accent ? "stat-accent" : ""}" onclick="go404()">
@@ -879,9 +879,9 @@
           <div><div class="member-name" style="font-size:15px">${m.name}</div><div class="member-role">${m.role}</div></div>
         </div>
         <div style="font-size:12.5px;color:var(--text-dim);line-height:1.9">
-          <div>🎓 ${m.speciality}</div>
-          <div>✉️ ${m.email}</div>
-          <div>📂 ${m.projects} active account${m.projects !== 1 ? "s" : ""} · ${m.experience} yrs experience</div>
+          <div> ${m.speciality}</div>
+          <div> ${m.email}</div>
+          <div> ${m.projects} active account${m.projects !== 1 ? "s" : ""} · ${m.experience} yrs experience</div>
         </div>
       </div>`
     ).join("");
@@ -897,10 +897,10 @@
     const q = state.productSearch.toLowerCase();
     const filtered = productCatalog.filter(a => a.name.toLowerCase().includes(q) || a.facility.toLowerCase().includes(q));
     const stats = [
-      { icon: "🔩", value: "2,847", label: "Total Catalogued", bar: 75, accent: true },
-      { icon: "🔬", value: "142", label: "In QA Testing", bar: 55 },
-      { icon: "⭐", value: "89", label: "Featured", bar: 30 },
-      { icon: "🔧", value: "34", label: "Retooling", bar: 20 }
+      { icon: "", value: "2,847", label: "Total Catalogued", bar: 75, accent: true },
+      { icon: "", value: "142", label: "In QA Testing", bar: 55 },
+      { icon: "", value: "89", label: "Featured", bar: 30 },
+      { icon: "", value: "34", label: "Retooling", bar: 20 }
     ];
     const statsHtml = stats.map(s =>
       `<div class="stat-card ${s.accent ? "stat-accent" : ""}" onclick="go404()">
@@ -936,10 +936,10 @@
 
   function renderReports() {
     const stats = [
-      { icon: "📄", value: qualityReports.length, label: "Active Reports", bar: 80, accent: true },
-      { icon: "✅", value: qualityReports.filter(p => p.status === "Published").length, label: "Published", bar: 70 },
-      { icon: "🔍", value: qualityReports.filter(p => p.status === "In Review").length, label: "In Review", bar: 20 },
-      { icon: "📊", value: qualityReports.reduce((a, p) => a + p.reads, 0), label: "Total Reads", bar: 60 }
+      { icon: "", value: qualityReports.length, label: "Active Reports", bar: 80, accent: true },
+      { icon: "", value: qualityReports.filter(p => p.status === "Published").length, label: "Published", bar: 70 },
+      { icon: "", value: qualityReports.filter(p => p.status === "In Review").length, label: "In Review", bar: 20 },
+      { icon: "", value: qualityReports.reduce((a, p) => a + p.reads, 0), label: "Total Reads", bar: 60 }
     ];
     const statsHtml = stats.map(s =>
       `<div class="stat-card ${s.accent ? "stat-accent" : ""}" onclick="go404()">
@@ -959,7 +959,7 @@
           </div>
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0">
             <span style="background:${reportStatusColor[p.status]}22;color:${reportStatusColor[p.status]};border-radius:999px;padding:3px 10px;font-family:var(--mono);font-size:10.5px;font-weight:700;text-transform:uppercase">${p.status}</span>
-            ${p.reads > 0 ? `<span style="font-size:12px;color:var(--text-dim)">📊 ${p.reads} reads</span>` : ''}
+            ${p.reads > 0 ? `<span style="font-size:12px;color:var(--text-dim)"> ${p.reads} reads</span>` : ''}
           </div>
         </div>
       </div>`
@@ -986,7 +986,7 @@
         <div style="width:3px;align-self:stretch;border-radius:999px;background:${scheduleTypeColor[ev.type]};opacity:0.7;flex-shrink:0"></div>
         <div style="flex:1;min-width:0">
           <div style="font-weight:700;color:#f2f1ee;font-size:13.5px">${ev.event}</div>
-          <div style="font-size:12px;color:var(--text-dim);margin-top:3px">📍 ${ev.site}</div>
+          <div style="font-size:12px;color:var(--text-dim);margin-top:3px"> ${ev.site}</div>
         </div>${tag}
       </div>`;
     }).join("");
@@ -1001,10 +1001,10 @@
     const remaining = totalAllocated - totalSpent;
     const utilRate = Math.round((totalSpent / totalAllocated) * 100);
     const stats = [
-      { icon: "💰", value: fmt(totalAllocated), label: "Total Allocated", bar: 100, accent: true },
-      { icon: "📉", value: fmt(totalSpent), label: "Total Spent", bar: utilRate },
-      { icon: "✅", value: fmt(remaining), label: "Remaining", bar: Math.round((remaining / totalAllocated) * 100) },
-      { icon: "📊", value: utilRate + "%", label: "Utilisation Rate", bar: utilRate }
+      { icon: "", value: fmt(totalAllocated), label: "Total Allocated", bar: 100, accent: true },
+      { icon: "", value: fmt(totalSpent), label: "Total Spent", bar: utilRate },
+      { icon: "", value: fmt(remaining), label: "Remaining", bar: Math.round((remaining / totalAllocated) * 100) },
+      { icon: "", value: utilRate + "%", label: "Utilisation Rate", bar: utilRate }
     ];
     const statsHtml = stats.map(s =>
       `<div class="stat-card ${s.accent ? "stat-accent" : ""}" onclick="go404()">
@@ -1039,10 +1039,10 @@
 
   function renderTraining() {
     const stats = [
-      { icon: "📚", value: resourceLibrary.length, label: "Resources", bar: 80, accent: true },
-      { icon: "📥", value: resourceLibrary.reduce((a, p) => a + p.downloads, 0).toLocaleString(), label: "Total Downloads", bar: 90 },
-      { icon: "📄", value: resourceLibrary.reduce((a, p) => a + p.pages, 0).toLocaleString(), label: "Total Pages", bar: 65 },
-      { icon: "🗓️", value: "2025", label: "Latest Year", bar: 100 }
+      { icon: "", value: resourceLibrary.length, label: "Resources", bar: 80, accent: true },
+      { icon: "", value: resourceLibrary.reduce((a, p) => a + p.downloads, 0).toLocaleString(), label: "Total Downloads", bar: 90 },
+      { icon: "", value: resourceLibrary.reduce((a, p) => a + p.pages, 0).toLocaleString(), label: "Total Pages", bar: 65 },
+      { icon: "", value: "2025", label: "Latest Year", bar: 100 }
     ];
     const statsHtml = stats.map(s =>
       `<div class="stat-card ${s.accent ? "stat-accent" : ""}" onclick="go404()">
@@ -1054,7 +1054,7 @@
 
     const cards = resourceLibrary.map(pub =>
       `<div class="pub-card" onclick="go404()">
-        <div style="font-size:30px;margin-bottom:12px">📖</div>
+        <div style="font-size:30px;margin-bottom:12px"></div>
         <div style="font-weight:700;color:#f2f1ee;font-size:14px;margin-bottom:6px;line-height:1.4">${pub.title}</div>
         <div style="font-size:12px;color:var(--text-dimmer);margin-bottom:14px">${pub.type} · ${pub.year} · ${pub.pages} pages</div>
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">

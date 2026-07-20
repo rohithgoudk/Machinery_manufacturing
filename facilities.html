@@ -63,12 +63,42 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .nav-links a:hover, .nav-links a.active{ color:var(--text); }
 @media (min-width:900px){ .nav-links{ display:flex; } }
 .nav-right{ display:flex; align-items:center; gap:10px; }
-.menu-btn{ width:40px; height:40px; border-radius:10px; border:1px solid var(--line); background:rgba(255,255,255,0.03); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.menu-btn{ width:40px; height:40px; border-radius:10px; border:1px solid var(--line); background:rgba(255,255,255,0.03); display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; z-index:101; }
 @media (min-width:900px){ .menu-btn{ display:none; } }
-.mobile-menu{ display:none; flex-direction:column; gap:2px; padding:8px 24px 18px; }
-.mobile-menu.open{ display:flex; }
-.mobile-menu a{ padding:12px 4px; border-top:1px solid var(--line-soft); color:var(--muted); font-size:14px; }
-.mobile-menu .btn{ margin-top:10px; width:100%; }
+
+/* Full-screen mobile menu overlay */
+.mobile-menu{
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  height:100dvh;
+  background:var(--bg);
+  z-index:100;
+  padding:96px 28px 32px;
+  gap:0;
+  overflow-y:auto;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(-12px);
+  transition:opacity .3s cubic-bezier(.22,1,.36,1), transform .3s cubic-bezier(.22,1,.36,1), visibility 0s linear .3s;
+}
+.mobile-menu.open{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+  transition:opacity .3s cubic-bezier(.22,1,.36,1), transform .3s cubic-bezier(.22,1,.36,1), visibility 0s linear 0s;
+}
+.mobile-menu-brand{ display:flex; justify-content:center; margin-bottom:20px; }
+.mobile-menu-brand .logo-slot{ width:130px; height:68px; }
+.mobile-menu a{ padding:18px 4px; border-top:1px solid var(--line-soft); color:var(--muted); font-size:17px; font-family:var(--font-display); letter-spacing:0.01em; }
+.mobile-menu a:hover{ color:var(--text); }
+.mobile-menu-brand{ border-top:none !important; padding:0 !important; }
+.mobile-menu .btn{ margin-top:18px; width:100%; }
+body.menu-open{ overflow:hidden; }
+@media (min-width:900px){ .mobile-menu{ display:none !important; } }
 .logo-slot{ width:120px; height:62px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
 .logo-slot img{ width:100%; height:100%; object-fit:contain; display:none; }
 .logo-slot img[src]{ display:block; }
@@ -125,11 +155,12 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .plant-tag{ position:absolute; transform:translate(12px,-8px); font-family:var(--font-mono); font-size:9.5px; letter-spacing:.03em; color:var(--text); white-space:nowrap; z-index:3; display:flex; align-items:center; gap:5px; }
 .plant-tag span{ color:var(--muted-2); }
 
-/* facility cards: icon panel instead of photo */
-.fac-icon-panel{ height:130px; position:relative; display:flex; align-items:center; justify-content:center; background:linear-gradient(150deg, rgba(255,90,31,0.14), rgba(154,165,177,0.05)); overflow:hidden; }
-.fac-icon-panel::before{ content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size:20px 20px; }
-.fac-icon-panel svg{ position:relative; z-index:1; color:var(--hot); }
-.fac-icon-panel .fac-num{ position:absolute; right:14px; bottom:10px; font-family:var(--font-display); font-size:34px; color:rgba(255,255,255,0.07); z-index:0; }
+/* facility cards: photo panel */
+.fac-photo{ height:130px; position:relative; overflow:hidden; }
+.fac-photo img{ width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.22,1,.36,1); }
+.fac-card:hover .fac-photo img{ transform:scale(1.06); }
+.fac-photo-overlay{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,10,11,0.1) 0%, rgba(10,10,11,0.28) 55%, rgba(10,10,11,0.72) 100%); pointer-events:none; }
+.fac-photo .fac-num{ position:absolute; right:14px; bottom:8px; font-family:var(--font-display); font-size:32px; color:rgba(255,255,255,0.4); z-index:1; text-shadow:0 2px 10px rgba(0,0,0,0.65); }
 
 /* testimonial initials avatar */
 .t-avatar-initials{ width:42px; height:42px; border-radius:50%; flex-shrink:0; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:14px; color:var(--hot); background:rgba(255,90,31,0.12); }
@@ -191,7 +222,7 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .fac-img{ height:170px; overflow:hidden; position:relative; }
 .fac-img img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.22,1,.36,1); }
 .fac-card:hover .fac-img img{ transform:scale(1.06); }
-.fac-badge{ position:absolute; top:12px; left:12px; font-family:var(--font-mono); font-size:10px; letter-spacing:0.06em; text-transform:uppercase; padding:4px 10px; border-radius:100px; background:rgba(10,10,11,0.7); backdrop-filter:blur(6px); border:1px solid var(--line); color:var(--ok); display:flex; align-items:center; gap:6px; }
+.fac-badge{ position:absolute; top:12px; left:12px; font-family:var(--font-mono); font-size:10px; letter-spacing:0.06em; text-transform:uppercase; padding:4px 10px; border-radius:100px; background:rgba(10,10,11,0.7); backdrop-filter:blur(6px); border:1px solid var(--line); color:var(--ok); display:flex; align-items:center; gap:6px; z-index:2; }
 .fac-badge .p{ width:6px; height:6px; border-radius:50%; background:var(--ok); box-shadow:0 0 6px var(--ok); }
 .fac-body{ padding:18px 20px 22px; }
 .fac-body h3{ font-size:16px; }
@@ -201,16 +232,40 @@ header.nav{ position:sticky; top:0; z-index:50; }
 .fac-stats div b{ display:block; font-family:var(--font-display); font-size:16px; color:var(--text); }
 .fac-stats div span{ font-family:var(--font-mono); font-size:10px; color:var(--muted-2); letter-spacing:0.03em; }
 
-.testimonials{ padding:64px 0; border-top:1px solid var(--line); }
-.t-grid{ margin-top:36px; display:grid; grid-template-columns:1fr; gap:20px; }
-@media (min-width:860px){ .t-grid{ grid-template-columns:repeat(3,1fr); } }
-.t-card{ border-radius:18px; padding:24px; display:flex; flex-direction:column; }
-.t-card blockquote{ margin:0; font-size:14px; line-height:1.65; color:rgba(242,241,238,0.86); }
-.t-foot{ margin-top:20px; padding-top:16px; border-top:1px solid var(--line); display:flex; align-items:center; gap:12px; }
-.t-avatar{ width:42px; height:42px; border-radius:50%; overflow:hidden; flex-shrink:0; border:1px solid var(--line); }
-.t-avatar img{ width:100%; height:100%; object-fit:cover; }
-.t-foot .name{ font-size:13.5px; font-weight:700; } .t-foot .role{ font-size:11.5px; color:var(--muted); margin-top:2px; }
-.t-foot .co{ font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:var(--hot); margin-top:6px; }
+.testimonials{ padding:80px 0; border-top:1px solid var(--line); overflow:hidden; }
+
+/* Center-highlighted carousel */
+.t-carousel{ margin-top:52px; }
+.t-stage{ position:relative; height:420px; display:flex; align-items:center; justify-content:center; }
+@media (max-width:640px){ .t-stage{ height:460px; } }
+.t-card{
+  position:absolute; top:50%; left:50%; width:320px; max-width:82vw;
+  margin:-160px 0 0 -160px; border-radius:18px; padding:28px; display:flex; flex-direction:column;
+  background:rgba(255,255,255,0.02); backdrop-filter:blur(10px); border:1px solid var(--line);
+  box-shadow:0 10px 30px rgba(0,0,0,0.35);
+  will-change:transform, opacity, filter;
+  transition:transform .65s cubic-bezier(.22,1,.36,1), opacity .55s ease, filter .55s ease, border-color .55s ease, box-shadow .55s ease;
+}
+.t-card .t-quote-mark{ color:var(--hot); font-family:var(--font-display); font-size:34px; line-height:1; opacity:.7; }
+.t-card blockquote{ margin:14px 0 0; font-size:14.5px; line-height:1.65; color:rgba(242,241,238,0.86); flex:1; }
+.t-card.active{
+  border-color:rgba(255,90,31,0.55);
+  box-shadow:0 0 0 1px rgba(255,90,31,0.25), 0 0 40px rgba(255,90,31,0.28), 0 20px 46px rgba(0,0,0,0.5);
+}
+.t-foot{ margin-top:22px; padding-top:18px; border-top:1px solid var(--line); display:flex; align-items:center; gap:12px; }
+.t-avatar{ width:44px; height:44px; border-radius:50%; overflow:hidden; flex-shrink:0; border:1px solid var(--line); position:relative; background:linear-gradient(135deg,var(--hot),#7a2c0a); }
+.t-avatar img{ width:100%; height:100%; object-fit:cover; position:relative; z-index:1; }
+.t-avatar .t-avatar-fallback{ display:none; position:absolute; inset:0; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:600; font-size:15px; color:#fff; }
+.t-foot .name{ font-size:14px; font-weight:700; }
+.t-foot .role{ font-size:12px; color:var(--muted); margin-top:2px; }
+.t-foot .co{ font-size:11.5px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:var(--hot); margin-top:6px; }
+
+.t-nav{ margin-top:32px; display:flex; align-items:center; justify-content:center; gap:16px; }
+.t-arrow{ width:44px; height:44px; border-radius:50%; border:1px solid var(--line); background:rgba(255,255,255,0.03); color:var(--text); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .25s cubic-bezier(.22,1,.36,1); }
+.t-arrow:hover{ border-color:rgba(255,90,31,0.5); color:var(--hot); background:rgba(255,90,31,0.08); transform:translateY(-2px); }
+.t-dots{ display:flex; gap:7px; margin:0 6px; }
+.t-dot{ width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.18); cursor:pointer; transition:all .3s cubic-bezier(.22,1,.36,1); }
+.t-dot.active{ background:var(--hot); width:20px; border-radius:100px; }
 
 .faq{ padding:64px 0; border-top:1px solid var(--line); }
 .faq-list{ margin-top:36px; max-width:820px; }
@@ -324,11 +379,17 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
       </a>
       <button class="menu-btn" id="menuBtn" aria-label="Open menu">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f2f1ee" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        <svg id="menuIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f2f1ee" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
       </button>
     </div>
   </div>
   <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html" class="mobile-menu-brand" aria-label="TORQUE — Back to home">
+      <span class="logo-slot">
+        <img src="./Assets/Stacklyimg2.webp" alt="Company logo">
+        <span class="logo-fallback">YOUR<br>LOGO</span>
+      </span>
+    </a>
     <a href="index.html">Home</a>
     <a href="capabilities.html">Capabilities</a>
     <a href="machinery.html">Machinery</a>
@@ -416,32 +477,62 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
     </div>
     <div class="fac-grid reveal-stagger">
       <div class="fac-card glass">
-        <div class="fac-icon-panel"><span class="fac-num">01</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><div class="fac-badge"><span class="p"></span>Running</div></div>
+        <div class="fac-photo">
+          <img src="./Assets/index1.webp" loading="lazy" alt="Chennai machining hall">
+          <div class="fac-photo-overlay"></div>
+          <span class="fac-num">01</span>
+          <div class="fac-badge"><span class="p"></span>Running</div>
+        </div>
         <div class="fac-body"><h3>Plant 01 — Chennai</h3><div class="fac-loc">HEADQUARTERS · TAMIL NADU, IN</div><p>Flagship 5-axis machining and CMM inspection hall, coordinating all six facilities.</p>
           <div class="fac-stats"><div><b>210k ft²</b><span>FLOOR AREA</span></div><div><b>38</b><span>CNC CELLS</span></div></div></div>
       </div>
       <div class="fac-card glass">
-        <div class="fac-icon-panel"><span class="fac-num">02</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 20V10a2 2 0 012-2h2M18 20V10a2 2 0 00-2-2h-2M6 20h12M12 4v4"/></svg><div class="fac-badge"><span class="p"></span>Running</div></div>
+        <div class="fac-photo">
+          <img src="./Assets/index2.webp" loading="lazy" alt="Pune robotic automation bay">
+          <div class="fac-photo-overlay"></div>
+          <span class="fac-num">02</span>
+          <div class="fac-badge"><span class="p"></span>Running</div>
+        </div>
         <div class="fac-body"><h3>Plant 02 — Pune</h3><div class="fac-loc">AUTOMATION HUB · MAHARASHTRA, IN</div><p>Dedicated robotic cell integration and weld-path programming for automotive lines.</p>
           <div class="fac-stats"><div><b>140k ft²</b><span>FLOOR AREA</span></div><div><b>64</b><span>ROBOTIC CELLS</span></div></div></div>
       </div>
       <div class="fac-card glass">
-        <div class="fac-icon-panel"><span class="fac-num">03</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="6" rx="1"/><rect x="4" y="15" width="16" height="6" rx="1"/><path d="M12 9v6"/></svg><div class="fac-badge"><span class="p"></span>Running</div></div>
+        <div class="fac-photo">
+          <img src="./Assets/index3.webp" loading="lazy" alt="Gujarat heavy press floor">
+          <div class="fac-photo-overlay"></div>
+          <span class="fac-num">03</span>
+          <div class="fac-badge"><span class="p"></span>Running</div>
+        </div>
         <div class="fac-body"><h3>Plant 03 — Gujarat</h3><div class="fac-loc">HEAVY FORMING · GUJARAT, IN</div><p>2,000-ton press lines and structural fabrication for pressure vessels and frames.</p>
           <div class="fac-stats"><div><b>260k ft²</b><span>FLOOR AREA</span></div><div><b>14</b><span>PRESS LINES</span></div></div></div>
       </div>
       <div class="fac-card glass">
-        <div class="fac-icon-panel"><span class="fac-num">04</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 2L3 14h7l-1 8 11-14h-7l1-6z"/></svg><div class="fac-badge"><span class="p"></span>Running</div></div>
+        <div class="fac-photo">
+          <img src="./Assets/index4.webp" loading="lazy" alt="Coimbatore fabrication floor">
+          <div class="fac-photo-overlay"></div>
+          <span class="fac-num">04</span>
+          <div class="fac-badge"><span class="p"></span>Running</div>
+        </div>
         <div class="fac-body"><h3>Plant 04 — Coimbatore</h3><div class="fac-loc">FABRICATION · TAMIL NADU, IN</div><p>Laser cutting, press braking, and certified welding for structural frames and enclosures.</p>
           <div class="fac-stats"><div><b>95k ft²</b><span>FLOOR AREA</span></div><div><b>3</b><span>FAB LINES</span></div></div></div>
       </div>
       <div class="fac-card glass">
-        <div class="fac-icon-panel"><span class="fac-num">05</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><div class="fac-badge"><span class="p"></span>Running</div></div>
+        <div class="fac-photo">
+          <img src="./Assets/index5.webp" loading="lazy" alt="Bengaluru inspection lab">
+          <div class="fac-photo-overlay"></div>
+          <span class="fac-num">05</span>
+          <div class="fac-badge"><span class="p"></span>Running</div>
+        </div>
         <div class="fac-body"><h3>Plant 05 — Bengaluru</h3><div class="fac-loc">QUALITY LAB · KARNATAKA, IN</div><p>Defense-grade inspection and vision systems verify every batch before it ships.</p>
           <div class="fac-stats"><div><b>70k ft²</b><span>FLOOR AREA</span></div><div><b>2</b><span>QA LINES</span></div></div></div>
       </div>
       <div class="fac-card glass">
-        <div class="fac-icon-panel"><span class="fac-num">06</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="10" width="18" height="4" rx="1"/><path d="M6 10V6M18 10V6M6 14v4M18 14v4"/></svg><div class="fac-badge"><span class="p"></span>Running</div></div>
+        <div class="fac-photo">
+          <img src="./Assets/index6.webp" loading="lazy" alt="Hyderabad metrology bay">
+          <div class="fac-photo-overlay"></div>
+          <span class="fac-num">06</span>
+          <div class="fac-badge"><span class="p"></span>Running</div>
+        </div>
         <div class="fac-body"><h3>Plant 06 — Hyderabad</h3><div class="fac-loc">METROLOGY · TELANGANA, IN</div><p>CMM and surface metrology lab supporting calibration across the full network.</p>
           <div class="fac-stats"><div><b>60k ft²</b><span>FLOOR AREA</span></div><div><b>2</b><span>METROLOGY LINES</span></div></div></div>
       </div>
@@ -485,31 +576,69 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
       <div class="eyebrow"><span class="dot"></span> FROM THE FLOOR</div>
       <h2>Built on uptime,<br>not promises.</h2>
     </div>
-    <div class="t-grid reveal-stagger">
-        <figure class="t-card glass">
+    <div class="t-carousel reveal">
+      <div class="t-stage" id="tStage">
+        <figure class="t-card" data-index="0">
+          <span class="t-quote-mark">&rdquo;</span>
           <blockquote>"TORQUE re-tooled our stamping line in six weeks with zero unplanned downtime since. Their engineers actually walk the floor."</blockquote>
           <figcaption class="t-foot">
-            <div class="t-avatar"><img src="./Assets/mar.webp" alt="Portrait of Marcus Webb"></div>
+            <div class="t-avatar"><img src="./Assets/mar.webp" alt="Portrait of Marcus Webb" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="t-avatar-fallback">MW</span></div>
             <div><div class="name">Marcus Webb</div><div class="role">VP of Operations</div><div class="co">RIDGELINE AUTO</div></div>
           </figcaption>
         </figure>
-        <figure class="t-card glass">
+        <figure class="t-card" data-index="1">
+          <span class="t-quote-mark">&rdquo;</span>
           <blockquote>"The CMM data we get back with every batch has cut our incoming inspection time by half. Traceability is airtight."</blockquote>
           <figcaption class="t-foot">
-            <div class="t-avatar"><img src="./Assets/pri.webp" alt="Portrait of Priya Anand"></div>
+            <div class="t-avatar"><img src="./Assets/pri.webp" alt="Portrait of Priya Anand" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="t-avatar-fallback">PA</span></div>
             <div><div class="name">Priya Anand</div><div class="role">Quality Director</div><div class="co">HELIX AEROSPACE</div></div>
           </figcaption>
         </figure>
-        <figure class="t-card glass">
+        <figure class="t-card" data-index="2">
+          <span class="t-quote-mark">&rdquo;</span>
           <blockquote>"We've run their robotic weld cells three shifts a day for two years. Maintenance windows are the only downtime we schedule."</blockquote>
           <figcaption class="t-foot">
-            <div class="t-avatar"><img src="./Assets/tom.webp" alt="Portrait of Tom Bergström"></div>
+            <div class="t-avatar"><img src="./Assets/tom.webp" alt="Portrait of Tom Bergström" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="t-avatar-fallback">TB</span></div>
             <div><div class="name">Tom Bergström</div><div class="role">Plant Manager</div><div class="co">NORTHFIELD ENERGY</div></div>
           </figcaption>
         </figure>
+        <figure class="t-card" data-index="3">
+          <span class="t-quote-mark">&rdquo;</span>
+          <blockquote>"TORQUE prototyped our housing in four days flat. When we scaled to volume, the ten-thousandth unit measured identical to the first."</blockquote>
+          <figcaption class="t-foot">
+            <div class="t-avatar"><img src="./Assets/sar.webp" alt="Portrait of Sarah Chen" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="t-avatar-fallback">SC</span></div>
+            <div><div class="name">Sarah Chen</div><div class="role">Founder & CEO</div><div class="co">VANTAGE ROBOTICS</div></div>
+          </figcaption>
+        </figure>
+        <figure class="t-card" data-index="4">
+          <span class="t-quote-mark">&rdquo;</span>
+          <blockquote>"Six plants, one spec sheet, no surprises. We stopped re-qualifying suppliers by region once we consolidated with TORQUE."</blockquote>
+          <figcaption class="t-foot">
+            <div class="t-avatar"><img src="./Assets/david.webp" alt="Portrait of David Okafor" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="t-avatar-fallback">DO</span></div>
+            <div><div class="name">David Okafor</div><div class="role">Founder, Supply Chain</div><div class="co">MERIDIAN RAIL</div></div>
+          </figcaption>
+        </figure>
+        <figure class="t-card" data-index="5">
+          <span class="t-quote-mark">&rdquo;</span>
+          <blockquote>"For implantable-grade components, tolerance isn't negotiable. TORQUE is the only shop we trust with the tight stuff."</blockquote>
+          <figcaption class="t-foot">
+            <div class="t-avatar"><img src="./Assets/ele.webp" alt="Portrait of Elena Ruiz" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="t-avatar-fallback">ER</span></div>
+            <div><div class="name">Elena Ruiz</div><div class="role">Founder</div><div class="co">SOLSTICE MEDICAL</div></div>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="t-nav">
+        <button class="t-arrow" id="tPrev" aria-label="Previous testimonial">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <div class="t-dots" id="tDots"></div>
+        <button class="t-arrow" id="tNext" aria-label="Next testimonial">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 <section class="faq">
   <div class="wrap">
     <div class="section-head reveal">
@@ -547,7 +676,7 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
           Schedule a Visit
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
         </a>
-        <a href="#" class="btn btn-ghost" onclick="navigateTo404(event)">Back to Home</a>
+        <a href="#" class="btn btn-ghost" onclick="navigateTo404(event)">Talk To Engineering</a>
       </div>
     </div>
   </div>
@@ -611,7 +740,28 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
 
   const menuBtn = document.getElementById('menuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
-  menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  const menuIcon = document.getElementById('menuIcon');
+
+  function setMenuIcon(open){
+    menuIcon.innerHTML = open
+      ? '<path d="M18 6L6 18M6 6l12 12"/>'
+      : '<path d="M3 12h18M3 6h18M3 18h18"/>';
+  }
+
+  menuBtn.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    document.body.classList.toggle('menu-open', isOpen);
+    setMenuIcon(isOpen);
+  });
+
+  // Close the full-screen menu when a link inside it is tapped
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      document.body.classList.remove('menu-open');
+      setMenuIcon(false);
+    });
+  });
 
   const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
   const io = new IntersectionObserver((entries) => {
@@ -620,6 +770,63 @@ footer{ border-top:1px solid var(--line); padding:56px 0 28px; background:rgba(0
     });
   }, { threshold: 0.12 });
   revealEls.forEach(el => io.observe(el));
+
+  // Testimonials: center-highlighted carousel
+  (function initTestimonialCarousel(){
+    const stage = document.getElementById('tStage');
+    if(!stage) return;
+    const cards = Array.from(stage.querySelectorAll('.t-card'));
+    const n = cards.length;
+    const dotsWrap = document.getElementById('tDots');
+    const prevBtn = document.getElementById('tPrev');
+    const nextBtn = document.getElementById('tNext');
+    let current = 0;
+
+    cards.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 't-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
+      dot.addEventListener('click', () => { current = i; render(); });
+      dotsWrap.appendChild(dot);
+    });
+    const dots = Array.from(dotsWrap.children);
+
+    function spacing(){
+      return window.innerWidth < 640 ? 190 : 300;
+    }
+
+    function render(){
+      const gap = spacing();
+      cards.forEach((card, i) => {
+        let offset = i - current;
+        if(offset > n / 2) offset -= n;
+        if(offset < -n / 2) offset += n;
+        const abs = Math.abs(offset);
+        const tx = offset * gap;
+        const scale = offset === 0 ? 1 : 0.86;
+        const opacity = abs <= 1 ? (offset === 0 ? 1 : 0.42) : 0;
+        const blur = offset === 0 ? 0 : 2;
+        card.style.transform = `translateX(${tx}px) scale(${scale})`;
+        card.style.opacity = opacity;
+        card.style.filter = `blur(${blur}px)`;
+        card.style.zIndex = 10 - abs;
+        card.style.pointerEvents = offset === 0 ? 'auto' : 'none';
+        card.classList.toggle('active', offset === 0);
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+
+    prevBtn.addEventListener('click', () => { current = (current - 1 + n) % n; render(); });
+    nextBtn.addEventListener('click', () => { current = (current + 1) % n; render(); });
+    window.addEventListener('resize', render);
+
+    let autoplay = setInterval(() => { current = (current + 1) % n; render(); }, 5500);
+    stage.addEventListener('mouseenter', () => clearInterval(autoplay));
+    stage.addEventListener('mouseleave', () => { autoplay = setInterval(() => { current = (current + 1) % n; render(); }, 5500); });
+
+    render();
+  })();
+
 
   const statEls = document.querySelectorAll('.stat-value');
   if (statEls.length) {
